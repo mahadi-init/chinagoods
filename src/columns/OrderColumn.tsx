@@ -1,5 +1,6 @@
 "use client";
 import ConfirmationDialog from "@/components/native/ConfirmationDialog";
+import DeleteItem from "@/components/native/DeleteItem";
 import DeliveryStatus from "@/components/native/DeliveryStatus";
 import { HoverToolkit } from "@/components/native/HoverToolkit";
 import OrderConfirmationDialog from "@/components/native/OrderConfirmationDialog";
@@ -132,6 +133,11 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             <ReceiptText size={18} />
           </Link>
         </HoverToolkit>
+        <DeleteItem
+          queryUrl={`/order/delete/${row.original._id}`}
+          validationTag="/order"
+          successMessage="Product deleted successfully"
+        />
       </div>
     ),
   },
