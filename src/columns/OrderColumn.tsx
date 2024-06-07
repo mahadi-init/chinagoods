@@ -136,7 +136,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         <DeleteItem
           queryUrl={`/order/delete/${row.original._id}`}
           validationTag="/order"
-          successMessage="Product deleted successfully"
+          successMessage="Order deleted successfully"
         />
       </div>
     ),
