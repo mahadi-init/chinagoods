@@ -17,7 +17,6 @@ export default function AddProduct() {
   const methods = useForm();
   const [imgUrl, setImgUrl] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
-  const [images, setImages] = useState<string[]>();
   const { trigger, isMutating } = useSWRMutation("/product/add", addRequest);
   const { showStatus } = useStatus();
 
