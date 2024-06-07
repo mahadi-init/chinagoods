@@ -133,11 +133,6 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             <ReceiptText size={18} />
           </Link>
         </HoverToolkit>
-        <DeleteItem
-          queryUrl={`/order/delete/${row.original._id}`}
-          validationTag="/order"
-          successMessage="Order deleted successfully"
-        />
       </div>
     ),
   },
