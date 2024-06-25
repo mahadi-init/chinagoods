@@ -248,7 +248,7 @@ export default function Order() {
           ))}
         </div>
 
-        <SubmitButton />
+        <SubmitButton isMutating={isMutating} />
       </form>
     </div>
   );

@@ -6,6 +6,7 @@ import { AdminSchema, AdminType } from "@/types/admin.t";
 import { sellerType } from "@/types/seller.t";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -105,6 +106,12 @@ export default function Login() {
           </div>
 
           <SubmitButton isMutating={isMutating} style="w-full" />
+          <p className="text-sm">
+            New seller{" "}
+            <Link className="text-blue-700" href="/auth/signup">
+              Signup
+            </Link>
+          </p>
         </form>
       </div>
     </div>
