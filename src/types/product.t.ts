@@ -4,7 +4,6 @@ import { ProductStatusSchema } from "./product-status.t";
 export const ProductSchema = z
   .object({
     _id: z.string(),
-    cid: z.coerce.number(),
     name: z.string().min(3, "Name is too short"),
     img: z.string().url(),
     sku: z.string().min(3, "SKU is too short"),

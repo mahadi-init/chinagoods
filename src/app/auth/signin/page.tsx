@@ -3,6 +3,7 @@ import SubmitButton from "@/components/native/SubmitButton";
 import { Input } from "@/components/ui/input";
 import addRequest from "@/https/add-request";
 import { AdminSchema, AdminType } from "@/types/admin.t";
+import { sellerType } from "@/types/seller.t";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -20,15 +21,15 @@ export default function Login() {
     resolver: zodResolver(AdminSchema),
   });
 
-  // admin login mutation
-  const { trigger, isMutating } = useSWRMutation(`/admin/login`, addRequest);
+  const { trigger, isMutating } = useSWRMutation(`/auth/login`, addRequest);
 
   const onSubmit = async (data: AdminType) => {
     const res: {
       success: boolean;
-      data: AdminType;
+      data: AdminType | sellerType;
       token: string | undefined;
       message: string | undefined;
+      role: "ADMIN" | "SELLER";
     } = await trigger(data);
 
     if (res.success === true) {
@@ -37,8 +38,21 @@ export default function Login() {
         secure: true,
       });
 
+      localStorage.setItem("authId", res?.data?._id as string);
+      localStorage.setItem("authName", res?.data?.name as string);
+
       toast.success(`Successfully Logged in as ${res.data.name}`);
-      router.replace("/");
+
+      if (res.role === "ADMIN") {
+        router.replace("/dashboard");
+        return;
+      }
+
+      if (res.role === "SELLER") {
+        router.replace("/seller");
+        return;
+      }
+
       return;
     }
 

@@ -28,6 +28,8 @@ export function OrderSummary({ order }: { order?: OrderType }) {
             </div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {/* @ts-expect-error */}
+              {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+              {/* @ts-expect-error */}
               {new Date(order?.createdAt).toDateString()}
             </span>
           </div>

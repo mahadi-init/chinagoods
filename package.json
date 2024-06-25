@@ -54,6 +54,7 @@
     "react-dom": "^18",
     "react-error-boundary": "^4.0.12",
     "react-hook-form": "^7.51.2",
+    "react-qr-code": "^2.0.15",
     "react-to-print": "^2.15.1",
     "sharp": "^0.33.2",
     "socket.io": "^4.7.5",

@@ -12,11 +12,13 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 interface TableUIWrapperProps<T> {
+  auth: string;
   route: string;
   columns: ColumnDef<T, unknown>[];
 }
 
-export default function OrderUIWrapper<T extends { status?: string }>({
+export default function SellerOrderUIWrapper<T extends { status?: string }>({
+  auth,
   route,
   columns,
 }: TableUIWrapperProps<T>) {
@@ -28,7 +30,7 @@ export default function OrderUIWrapper<T extends { status?: string }>({
 
   // fetch all data using pagination
   const { data, error, isLoading, mutate } = useSWR<T[]>(
-    `${route}/page?page=${index}&limit=${limit}`,
+    `${route}?page=${index}&limit=${limit}`,
     fetcher,
   );
 
@@ -41,7 +43,7 @@ export default function OrderUIWrapper<T extends { status?: string }>({
 
   // fetch filtered data
   const { data: filter, isLoading: isSearchLoading } = useSWR<T[]>(
-    search && `${route}/search?q=${search}`,
+    search && `/seller/orders/search/${auth}?q=${search}`,
     fetcher,
   );
 
@@ -75,6 +77,8 @@ export default function OrderUIWrapper<T extends { status?: string }>({
   const handleDropdown = (status: string) => {
     if (status === "ALL") {
       setFilteredItems(data);
+    } else if (status === "PROCESSING") {
+      setFilteredItems(data?.filter((item) => item.status !== status));
     } else {
       setFilteredItems(data?.filter((item) => item.status === status));
     }

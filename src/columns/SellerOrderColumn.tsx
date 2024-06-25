@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { ReceiptText, Send } from "lucide-react";
 import Link from "next/link";
 
-export const orderColumn: ColumnDef<OrderType>[] = [
+export const sellerOrderColumn: ColumnDef<OrderType>[] = [
   {
     accessorKey: "invoice",
     header: "INVOICE",
@@ -31,21 +31,6 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         <p className="cursor-pointer font-medium">
           {row.original.cart?.map((item) => item.sku).join(", ")}
         </p>
-      );
-    },
-  },
-  {
-    accessorKey: "orderBy",
-    header: "ORDER BY",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/seller/details/${row.original.sellerId}`}
-          className="cursor-pointer font-medium underline"
-          target="_blank"
-        >
-          {row.original.sellerName}
-        </Link>
       );
     },
   },
@@ -126,25 +111,5 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         <p className={clsx(color, "font-semibold")}>{row.original.status}</p>
       );
     },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => (
-      <div className="flex gap-8">
-        {row.original.status === "PENDING" && (
-          <OrderConfirmationDialog
-            alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}
-            data={row.original}
-          >
-            <Send size={18} />
-          </OrderConfirmationDialog>
-        )}
-        <HoverToolkit text="Invoice">
-          <Link href={`/dashboard/order/invoice/${row.original._id}`}>
-            <ReceiptText size={18} />
-          </Link>
-        </HoverToolkit>
-      </div>
-    ),
   },
 ];

@@ -3,17 +3,16 @@ import ProductDetailsDialog from "@/app/dashboard/product/_components/product-de
 import DeleteItem from "@/components/native/DeleteItem";
 import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { ProductType } from "@/types/product.t";
+import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
-import { PencilIcon } from "lucide-react";
-import Link from "next/link";
 
 export const productColumn: ColumnDef<ProductType>[] = [
   {
-    accessorKey: "cid",
+    accessorKey: "_id",
     header: "ID",
     cell: ({ row }) => {
-      return <p># {row.original.cid}</p>;
+      return <p># {getLastSixDigit(row.original._id)}</p>;
     },
   },
   {
