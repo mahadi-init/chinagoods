@@ -2,13 +2,14 @@
 import { OrderType } from "@/types/order.t";
 import { forwardRef } from "react";
 import { Card } from "../ui/card";
-import { getLastSixDigit } from "@/utils/get-last-six-digit";
 
 function InvoiceGenerator({ data }: { data?: OrderType }) {
   return (
     <Card className="mb-10 w-48 p-2">
       <p className="text-center font-bold">China Goods</p>
-      <p className="text-center font-medium"># {getLastSixDigit(data?._id)}</p>
+      <p className="text-center font-medium">
+        # {data?.consignmentId ?? "ID NOT SET"}
+      </p>
       <div className="mt-2 flex w-full flex-col justify-center gap-1 text-sm">
         <p>Name : {data?.name}</p>
         <p>Phone : {data?.phone}</p>
