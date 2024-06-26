@@ -1,11 +1,8 @@
 "use client";
-import { HoverToolkit } from "@/components/native/HoverToolkit";
-import OrderConfirmationDialog from "@/components/native/OrderConfirmationDialog";
 import { OrderType } from "@/types/order.t";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
-import { ReceiptText, Send } from "lucide-react";
 import Link from "next/link";
 
 export const sellerOrderColumn: ColumnDef<OrderType>[] = [
@@ -15,8 +12,9 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/dashboard/order/details/${row.original._id}`}
+          href={`/order/details/${row.original._id}`}
           className="cursor-pointer font-medium underline"
+          target="_blank"
         >
           # {getLastSixDigit(row.original._id)}
         </Link>

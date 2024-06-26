@@ -13,4 +13,4 @@ export const SellerSchema = z
   })
   .partial();
 
-export type sellerType = z.infer<typeof SellerSchema>;
+export type SellerType = z.infer<typeof SellerSchema>;

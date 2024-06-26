@@ -78,7 +78,14 @@ export default function SellerOrderUIWrapper<T extends { status?: string }>({
     if (status === "ALL") {
       setFilteredItems(data);
     } else if (status === "PROCESSING") {
-      setFilteredItems(data?.filter((item) => item.status !== status));
+      setFilteredItems(
+        data?.filter(
+          (item) =>
+            item.status !== "PENDING" &&
+            item.status !== "CANCELLED" &&
+            item.status !== "DELIVERED",
+        ),
+      );
     } else {
       setFilteredItems(data?.filter((item) => item.status === status));
     }

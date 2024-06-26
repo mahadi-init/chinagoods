@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 import GeneralInformation from "../_components/general-information";
 import AdditionalKeyValue from "../_components/additional-key-value";
+import { useRouter } from "next/navigation";
 
 export default function AddProduct() {
   const methods = useForm();
@@ -19,6 +20,7 @@ export default function AddProduct() {
   const [isLoading, setIsLoading] = useState(false);
   const { trigger, isMutating } = useSWRMutation("/product/add", addRequest);
   const { showStatus } = useStatus();
+  const router = useRouter();
 
   const onSubmit = async (formData: ProductType) => {
     if (!imgUrl) {
@@ -37,6 +39,10 @@ export default function AddProduct() {
 
     const res = await trigger(data);
     showStatus("/product", "Product added sucessfully", res);
+
+    if (res.success) {
+      router.push("/dashboard/product");
+    }
   };
 
   return (

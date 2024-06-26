@@ -36,6 +36,7 @@ export default function Order() {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<OrderType>({
     resolver: zodResolver(OrderSchema),
   });
@@ -77,15 +78,15 @@ export default function Order() {
       cart.push({
         _id: product._id,
         name: product.name,
-        price: product.price,
+        price: item.price,
         quantity: item.quantity,
         img: product.img,
         sku: product.sku,
       });
-      subtotal += Number(product.price) * Number(item.quantity);
+      subtotal += Number(item.price) * Number(item.quantity);
 
       if (index !== data.cart!!.length - 1) {
-        sku += product.sku + " & ";
+        sku += product.sku + " - ";
       } else {
         sku += product.sku;
       }
@@ -109,6 +110,7 @@ export default function Order() {
 
     const res = await trigger(order);
     showStatus("/order", "Order send successully", res);
+    reset();
   };
 
   return (
@@ -225,6 +227,22 @@ export default function Order() {
                 {errors.cart?.[index]?.quantity && (
                   <span className="text-xs text-red-700">
                     {errors.cart?.[index]?.quantity?.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <Input
+                  type="number"
+                  id="price"
+                  placeholder="Enter Price"
+                  {...register(`cart.${index}.price`, {
+                    required: true,
+                  })}
+                />
+                {errors.cart?.[index]?.price && (
+                  <span className="text-xs text-red-700">
+                    {errors.cart?.[index]?.price?.message}
                   </span>
                 )}
               </div>

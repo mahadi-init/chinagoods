@@ -1,7 +1,13 @@
 "use client";
 import clsx from "clsx";
 import { deleteCookie } from "cookies-next";
-import { LayoutDashboard, LogOut, ShoppingBasket, Star } from "lucide-react";
+import {
+  CircleUserRound,
+  LayoutDashboard,
+  LogOut,
+  ShoppingBasket,
+  Star,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -109,6 +115,25 @@ export default function Sidenav(): JSX.Element {
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                     Products
+                  </div>
+                </Link>
+              </li>
+
+              <li className="px-3">
+                <Link
+                  href="/dashboard/sellers"
+                  onClick={hideSideNav}
+                  className={clsx(
+                    "flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-rose-50 hover:text-rose-500 focus:bg-rose-50",
+                    pathname.includes("sellers") &&
+                      "bg-purple-50 text-purple-600",
+                  )}
+                >
+                  <div className="flex items-center self-center">
+                    <CircleUserRound size={18} />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                    Sellers
                   </div>
                 </Link>
               </li>

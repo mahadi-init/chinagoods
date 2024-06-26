@@ -1,4 +1,6 @@
 "use client";
+import ChangeConfirmationStatus from "@/components/native/ChangeConfirmStatus";
+import DeleteItem from "@/components/native/DeleteItem";
 import { HoverToolkit } from "@/components/native/HoverToolkit";
 import OrderConfirmationDialog from "@/components/native/OrderConfirmationDialog";
 import { OrderType } from "@/types/order.t";
@@ -77,6 +79,18 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     },
   },
   {
+    accessorKey: "confirmation",
+    header: "CONFIRM",
+    cell: ({ row }) => {
+      return (
+        <ChangeConfirmationStatus
+          id={row.original._id}
+          confirm={row.original.confirm}
+        />
+      );
+    },
+  },
+  {
     accessorKey: "trackingLink",
     header: "TRACKING",
     cell: ({ row }) => {
@@ -144,6 +158,13 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             <ReceiptText size={18} />
           </Link>
         </HoverToolkit>
+        <div className="flex items-center gap-8">
+          <DeleteItem
+            queryUrl={`/order/delete/${row.original._id}`}
+            validationTag="/order"
+            successMessage="Order deleted successfully"
+          />
+        </div>
       </div>
     ),
   },

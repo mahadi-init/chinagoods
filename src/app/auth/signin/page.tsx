@@ -3,12 +3,12 @@ import SubmitButton from "@/components/native/SubmitButton";
 import { Input } from "@/components/ui/input";
 import addRequest from "@/https/add-request";
 import { AdminSchema, AdminType } from "@/types/admin.t";
-import { sellerType } from "@/types/seller.t";
+import { SellerType } from "@/types/seller.t";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 
@@ -24,10 +24,10 @@ export default function Login() {
 
   const { trigger, isMutating } = useSWRMutation(`/auth/login`, addRequest);
 
-  const onSubmit = async (data: AdminType) => {
+  const onSubmit: SubmitHandler<AdminType | SellerType> = async (data) => {
     const res: {
       success: boolean;
-      data: AdminType | sellerType;
+      data: AdminType | SellerType;
       token: string | undefined;
       message: string | undefined;
       role: "ADMIN" | "SELLER";

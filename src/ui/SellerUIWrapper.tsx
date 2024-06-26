@@ -3,11 +3,9 @@ import { DataTable } from "@/components/native/DataTable";
 import FetchErrorMessage from "@/components/native/FetchErrorMessage";
 import SixSkeleton from "@/components/native/SixSkeleton";
 import TablePagination from "@/components/native/TablePagination";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fetcher } from "@/https/get-request";
 import { ColumnDef } from "@tanstack/react-table";
-import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
@@ -16,10 +14,11 @@ interface TableUIWrapperProps<T> {
   columns: ColumnDef<T, unknown>[];
 }
 
-export default function OrderUIWrapper<
-  T extends { status?: string; confirm?: boolean },
->({ route, columns }: TableUIWrapperProps<T>) {
-  const limit = 50;
+export default function SellerUIWrapper<T>({
+  route,
+  columns,
+}: TableUIWrapperProps<T>) {
+  const limit = 10;
   const [index, setIndex] = useState(1);
   const [temp, setTemp] = useState<string>();
   const [search, setSearch] = useState<string>();
@@ -70,34 +69,6 @@ export default function OrderUIWrapper<
     return <FetchErrorMessage error={error} />;
   }
 
-  // filter by dropdown
-  const handleDropdown = (status: string) => {
-    if (status === "ALL") {
-      setFilteredItems(data);
-    } else if (status === "PROCESSING") {
-      setFilteredItems(
-        data?.filter(
-          (item) =>
-            item.status !== "PENDING" &&
-            item.status !== "CANCELLED" &&
-            item.status !== "DELIVERED",
-        ),
-      );
-    } else {
-      setFilteredItems(data?.filter((item) => item.status === status));
-    }
-  };
-
-  const handleConfirmation = (status: string) => {
-    if (status === "ALL") {
-      setFilteredItems(data);
-    } else if (status === "OK") {
-      setFilteredItems(data?.filter((item) => item.confirm === true));
-    } else {
-      setFilteredItems(data?.filter((item) => item.confirm === false));
-    }
-  };
-
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
       <div className="mb-4 flex items-center justify-between">
@@ -106,42 +77,6 @@ export default function OrderUIWrapper<
           placeholder="filter item.."
           onChange={(e) => setTemp(e.target.value)}
         />
-        <div className="flex gap-2">
-          <div className="flex gap-2">
-            <select
-              onChange={(e) => handleConfirmation(e.target.value)}
-              className="mt-0.5 rounded-md bg-gray-100 p-2"
-            >
-              <option value="ALL">All</option>
-              <option className="text-sky-600" value="OK">
-                OK
-              </option>
-              <option className="text-sky-600" value="NO">
-                NO
-              </option>
-            </select>
-          </div>
-          <div className="flex gap-2">
-            <select
-              onChange={(e) => handleDropdown(e.target.value)}
-              className="mt-0.5 rounded-md bg-gray-100 p-2"
-            >
-              <option value="ALL">ALL</option>
-              <option className="text-sky-600" value="PENDING">
-                PENDING
-              </option>
-              <option className="text-yellow-700" value="PROCESSING">
-                PROCESSING
-              </option>
-              <option className="text-green-600" value="DELIVERED">
-                DELIVERED
-              </option>
-              <option className="text-red-600" value="CANCELLED">
-                CANCELLED
-              </option>
-            </select>
-          </div>
-        </div>
       </div>
 
       <div className="h-screen">
