@@ -54,9 +54,8 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/seller/details/${row.original.sellerId}`}
+          href={`/dashboard/sellers/profile?id=${row.original._id}&name=${row.original.name}`}
           className="cursor-pointer font-medium underline"
-          target="_blank"
         >
           {row.original.sellerName}
         </Link>
