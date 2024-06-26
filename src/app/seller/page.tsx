@@ -11,11 +11,14 @@ import {
 import { fetcher } from "@/https/get-request";
 import { SellerDashboard } from "@/types/seller-dashboard";
 import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
+import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 export default function Seller() {
   const [auth, setAuth] = useState<string>();
+  const [authName, setAuthName] = useState<string>();
+
   const { data } = useSWR<SellerDashboard>(
     auth && `/seller/orders/dashboard/${auth}`,
     fetcher,
@@ -23,11 +26,15 @@ export default function Seller() {
 
   useEffect(() => {
     setAuth(localStorage.getItem("authId") as string);
+    setAuthName(localStorage.getItem("authName") as string);
   }, []);
 
   return (
     <div>
-      <PageTop title="Profile" />
+      <PageTop
+        title={`Profile : ${authName} - #${getLastSixDigit(auth)}`}
+        showSubTitle={false}
+      />
 
       <div className="my-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         <Card className="w-[350px] bg-sky-700 text-white">
