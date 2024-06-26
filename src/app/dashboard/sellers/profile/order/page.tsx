@@ -19,6 +19,7 @@ import { ProductType } from "@/types/product.t";
 import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -31,6 +32,9 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 export default function Order() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const name = searchParams.get("name");
   const { data: products } = useSWR<ProductType[]>("/product/all", fetcher);
   const {
     control,
@@ -105,8 +109,8 @@ export default function Order() {
       total,
       status: "PENDING",
       sku: sku,
-      sellerName: localStorage.getItem("authName") as string,
-      sellerId: localStorage.getItem("authId") as string,
+      sellerName: name,
+      sellerId: id,
     };
 
     const res = await trigger(order);
@@ -116,6 +120,10 @@ export default function Order() {
 
   return (
     <div>
+      <div className="mt-1 flex flex-col gap-1 font-medium">
+        <p>Name : {name}</p>
+        <p>ID : {id}</p>
+      </div>
       <p className="mt-2 text-center text-3xl font-bold text-gray-800">
         Create new order
       </p>
@@ -171,16 +179,12 @@ export default function Order() {
           )}
         </div>
 
-        <label className="mb-1 block text-sm font-medium" htmlFor="product">
-          Select Products <span className="text-red-500">*</span>
-        </label>
-        <label className="-mt-10 mb-1 block text-xs">Name - Price -Sku</label>
-        <div className="-mt-12 w-full">
+        <div>
+          <label className="mb-1 block text-sm font-medium" htmlFor="product">
+            Select Products <span className="text-red-500">*</span>
+          </label>
           {fields.map((field, index) => (
-            <div
-              className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-              key={field.id}
-            >
+            <div className="mt-4 flex gap-4" key={field.id}>
               <Controller
                 name={`cart.${index}._id`}
                 control={control}
@@ -205,12 +209,10 @@ export default function Order() {
                                   height={24}
                                   className="rounded-sm"
                                 />
-                                <div className="flex gap-2">
-                                  <p>{product.name}</p>
-                                  <p>{" - "}</p>
-                                  <p>{product.price}</p>
-                                  <p>{" - "}</p>
-                                  <p>{product.price}</p>
+                                <div className="flex gap-4">
+                                  <p>TITLE: {product.name}</p>
+                                  <p>PRICE: {product.price}</p>
+                                  <p>SKU: {product.price}</p>
                                 </div>
                               </div>
                             </SelectItem>
@@ -254,23 +256,21 @@ export default function Order() {
                 )}
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => remove(index)}
-                >
-                  Remove
-                </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => remove(index)}
+              >
+                Remove
+              </Button>
 
-                <Button
-                  type="button"
-                  variant="default"
-                  onClick={() => append({})}
-                >
-                  Add
-                </Button>
-              </div>
+              <Button
+                type="button"
+                variant="default"
+                onClick={() => append({})}
+              >
+                Add
+              </Button>
             </div>
           ))}
         </div>

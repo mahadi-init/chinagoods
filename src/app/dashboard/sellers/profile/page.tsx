@@ -11,18 +11,25 @@ import {
 import { fetcher } from "@/https/get-request";
 import { SellerDashboard } from "@/types/seller-dashboard";
 import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
-export default function SellerById({ params }: { params: { id: string } }) {
+export default function SellerById() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const name = searchParams.get("name");
+
   const { data } = useSWR<SellerDashboard>(
-    params.id && `/seller/orders/dashboard/${params.id}`,
+    id && `/seller/orders/dashboard/${id}`,
     fetcher,
   );
 
   return (
     <div>
-      <PageTop title="Profile" />
-
+      <div className="mt-1 flex flex-col gap-1 font-medium">
+        <p>Name : {name}</p>
+        <p>ID : {id}</p>
+      </div>
       <div className="my-8 grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         <Card className="w-[350px] bg-sky-700 text-white">
           <CardHeader>
@@ -104,10 +111,10 @@ export default function SellerById({ params }: { params: { id: string } }) {
         </Card>
       </div>
 
-      {params.id && (
+      {id && (
         <SellerOrderUIWrapper
-          auth={params.id}
-          route={`/seller/orders/${params.id}`}
+          auth={id}
+          route={`/seller/orders/${id}`}
           columns={sellerOrderColumn}
         />
       )}

@@ -5,7 +5,6 @@ import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { SellerType } from "@/types/seller.t";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
-import clsx from "clsx";
 import Link from "next/link";
 
 export const sellerColumn: ColumnDef<SellerType>[] = [
@@ -22,9 +21,8 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/seller/details/${row.original._id}`}
+          href={`/dashboard/sellers/profile?id=${row.original._id}&name=${row.original.name}`}
           className="font-medium underline"
-          target="_blank"
         >
           {row.original.name}
         </Link>
@@ -35,16 +33,16 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
     accessorKey: "phone",
     header: "PHONE",
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => (
-  //     <div className="flex items-center gap-8">
-  //       <DeleteItem
-  //         queryUrl={`/product/delete/${row.original._id}`}
-  //         validationTag="/product"
-  //         successMessage="Product deleted successfully"
-  //       />
-  //     </div>
-  //   ),
-  // },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <div className="flex items-center gap-8">
+        <DeleteItem
+          queryUrl={`/seller/delete/${row.original._id}`}
+          validationTag="/seller"
+          successMessage="Seller deleted successfully"
+        />
+      </div>
+    ),
+  },
 ];
