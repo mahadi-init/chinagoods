@@ -1,6 +1,5 @@
 "use client";
 
-import { sellerOrderColumn } from "@/columns/SellerOrderColumn";
 import PageTop from "@/components/native/PageTop";
 import {
   Card,
@@ -10,24 +9,24 @@ import {
 } from "@/components/ui/card";
 import { fetcher } from "@/https/get-request";
 import { SellerDashboard } from "@/types/seller-dashboard";
-import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
+import React from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
-export default function Seller() {
+export default function Dashboard() {
   const [auth, setAuth] = useState<string>();
   const [authName, setAuthName] = useState<string>();
-
-  const { data } = useSWR<SellerDashboard>(
-    auth && `/seller/orders/dashboard/${auth}`,
-    fetcher,
-  );
 
   useEffect(() => {
     setAuth(localStorage.getItem("authId") as string);
     setAuthName(localStorage.getItem("authName") as string);
   }, []);
+
+  const { data } = useSWR<SellerDashboard>(
+    auth && `/seller/orders/dashboard/${auth}`,
+    fetcher,
+  );
 
   return (
     <div>
@@ -35,7 +34,6 @@ export default function Seller() {
         title={`Profile : ${authName} - #${getLastSixDigit(auth)}`}
         showSubTitle={false}
       />
-
       <div className="my-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         <Card className="w-[350px] bg-sky-700 text-white">
           <CardHeader>
@@ -116,14 +114,6 @@ export default function Seller() {
           </CardHeader>
         </Card>
       </div>
-
-      {auth && (
-        <SellerOrderUIWrapper
-          auth={auth}
-          route={`/seller/orders/${auth}`}
-          columns={sellerOrderColumn}
-        />
-      )}
     </div>
   );
 }

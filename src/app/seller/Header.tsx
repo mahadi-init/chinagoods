@@ -16,7 +16,8 @@ export default function Header() {
   return (
     <div className="flex w-full items-center justify-between bg-blue-400 p-2 px-4 font-medium text-white">
       <div className="flex gap-4">
-        <Link href="/seller">Profile</Link>
+        <Link href="/seller">Dashboard</Link>
+        <Link href="/seller/profile">Profile</Link>
         <Link href="/seller/order">Order</Link>
       </div>
 
