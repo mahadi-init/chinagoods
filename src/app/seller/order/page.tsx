@@ -92,7 +92,7 @@ export default function Order() {
       }
     });
 
-    total = subtotal + shippingCost;
+    total = subtotal;
 
     const order = {
       name: data.name,

@@ -12,6 +12,18 @@ import Link from "next/link";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
+    accessorKey: "confirmation",
+    header: "CONFIRM",
+    cell: ({ row }) => {
+      return (
+        <ChangeConfirmationStatus
+          id={row.original._id}
+          confirm={row.original.confirm}
+        />
+      );
+    },
+  },
+  {
     accessorKey: "invoice",
     header: "INVOICE",
     cell: ({ row }) => {
@@ -75,18 +87,6 @@ export const orderColumn: ColumnDef<OrderType>[] = [
           {/* @ts-ignore */}
           {new Date(row.original.createdAt).toDateString()}
         </p>
-      );
-    },
-  },
-  {
-    accessorKey: "confirmation",
-    header: "CONFIRM",
-    cell: ({ row }) => {
-      return (
-        <ChangeConfirmationStatus
-          id={row.original._id}
-          confirm={row.original.confirm}
-        />
       );
     },
   },

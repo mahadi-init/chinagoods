@@ -91,15 +91,15 @@ export function OrderSummary({ order }: { order?: OrderType }) {
             <div>
               <h2 className="mb-4 text-lg font-semibold">Order Summary</h2>
               <div className="rounded-lg border border-gray-200 p-4 dark:border-slate-800">
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <span>Subtotal</span>
                   <span>৳ {order?.subTotal}</span>
-                </div>
-                <div className="flex items-center justify-between">
+                </div> */}
+                {/* <div className="flex items-center justify-between">
                   <span>Shipping</span>
                   <span>৳ {order?.shippingCost}</span>
-                </div>
-                <Separator className="my-4" />
+                </div> */}
+                {/* <Separator className="my-4" /> */}
                 <div className="flex items-center justify-between font-semibold">
                   <span>Total</span>
                   <span>৳ {order?.total}</span>
