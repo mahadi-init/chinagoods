@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   ShoppingBasket,
+  ShoppingCartIcon,
   Star,
 } from "lucide-react";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import ConfirmationDialog from "./ConfirmationDialog";
+import ShoppingBagIcon from "@/icons/ShoppingBag";
 
 export default function Sidenav(): JSX.Element {
   const pathname = usePathname();
@@ -91,12 +93,27 @@ export default function Sidenav(): JSX.Element {
                     <LayoutDashboard size={18} />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                    Dashboard
+                  </div>
+                </Link>
+              </li>
+
+              <li className="px-3">
+                <Link
+                  href="/dashboard/order"
+                  onClick={hideSideNav}
+                  className={clsx(
+                    "flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-rose-50 hover:text-rose-500 focus:bg-rose-50",
+                    pathname.includes("order") &&
+                      "bg-purple-50 text-purple-600",
+                  )}
+                >
+                  <div className="flex items-center self-center">
+                    <ShoppingCartIcon size={18} />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                     Orders
                   </div>
-                  {/* <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500">
-                    {pending?.data}
-                    <span className="sr-only"> new orders</span>
-                  </span> */}
                 </Link>
               </li>
 

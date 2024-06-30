@@ -87,9 +87,8 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
       let color;
 
       switch (row.original.status) {
-        case "CANCELLED":
-        case "HOLD":
-          color = "text-red-600";
+        case "WAITING":
+          color = "text-sky-600";
           break;
 
         case "IN_REVIEW":
@@ -99,6 +98,11 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
         case "DELIVERED":
         case "PARTIAL_DELIVERED":
           color = "text-green-600";
+          break;
+
+        case "CANCELLED":
+        case "HOLD":
+          color = "text-red-600";
           break;
 
         default:

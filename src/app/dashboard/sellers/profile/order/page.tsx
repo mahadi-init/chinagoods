@@ -107,7 +107,7 @@ export default function Order() {
       shippingCost,
       subTotal: subtotal,
       total,
-      status: "PENDING",
+      status: "WAITING",
       sku: sku,
       sellerName: name,
       sellerId: id,

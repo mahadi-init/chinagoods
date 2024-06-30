@@ -117,9 +117,8 @@ export const orderColumn: ColumnDef<OrderType>[] = [
       let color;
 
       switch (row.original.status) {
-        case "CANCELLED":
-        case "HOLD":
-          color = "text-red-600";
+        case "WAITING":
+          color = "text-sky-600";
           break;
 
         case "IN_REVIEW":
@@ -129,6 +128,11 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         case "DELIVERED":
         case "PARTIAL_DELIVERED":
           color = "text-green-600";
+          break;
+
+        case "CANCELLED":
+        case "HOLD":
+          color = "text-red-600";
           break;
 
         default:
@@ -144,7 +148,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex gap-8">
-        {row.original.status === "PENDING" && (
+        {row.original.status === "WAITING" && (
           <OrderConfirmationDialog
             alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}
             data={row.original}

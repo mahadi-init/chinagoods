@@ -103,7 +103,7 @@ export default function Order() {
       shippingCost,
       subTotal: subtotal,
       total,
-      status: "PENDING",
+      status: "WAITING",
       sku: sku,
       sellerName: localStorage.getItem("authName") as string,
       sellerId: localStorage.getItem("authId") as string,
