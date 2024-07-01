@@ -19,6 +19,7 @@ import { ProductType } from "@/types/product.t";
 import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -31,6 +32,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 export default function Order() {
+  const router = useRouter();
   const { data: products } = useSWR<ProductType[]>("/product/all", fetcher);
   const {
     control,
@@ -44,8 +46,7 @@ export default function Order() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    // @ts-ignore
-    name: "order",
+    name: "cart",
   });
 
   const { trigger, isMutating } = useSWRMutation("/order/add", addRequest);
@@ -94,6 +95,12 @@ export default function Order() {
     });
 
     total = subtotal;
+
+    if (total === 0) {
+      toast.error("Error submitting order");
+      router.refresh();
+      return;
+    }
 
     const order = {
       name: data.name,
