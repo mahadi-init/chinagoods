@@ -11,9 +11,12 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
     header: "SKU",
     cell: ({ row }) => {
       return (
-        <p className="cursor-pointer font-medium">
-          {row.original.cart?.map((item) => item.sku).join(", ")}
-        </p>
+        <Link
+          href={`/dashboard/order/details/${row.original._id}`}
+          className="cursor-pointer font-medium underline"
+        >
+          {row.original.cart?.map((item) => item.sku).join(" & ")}
+        </Link>
       );
     },
   },

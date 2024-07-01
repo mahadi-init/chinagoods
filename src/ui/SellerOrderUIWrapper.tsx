@@ -11,14 +11,13 @@ import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 
 interface TableUIWrapperProps<T> {
-  auth?: string;
   route: string;
   columns: ColumnDef<T, unknown>[];
 }
 
 export default function SellerOrderUIWrapper<
   T extends { status?: string; confirm?: boolean },
->({ auth, route, columns }: TableUIWrapperProps<T>) {
+>({ route, columns }: TableUIWrapperProps<T>) {
   const [temp, setTemp] = useState<string>();
   const { replace } = useRouter();
   const pathname = usePathname();

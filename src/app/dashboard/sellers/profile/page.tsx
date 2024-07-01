@@ -113,8 +113,7 @@ export default function SellerById() {
 
       {id && (
         <SellerOrderUIWrapper
-          auth={id}
-          route={`/seller/orders/${id}`}
+          route={`/seller/orders?auth=${id}`}
           columns={sellerOrderColumn as any}
         />
       )}

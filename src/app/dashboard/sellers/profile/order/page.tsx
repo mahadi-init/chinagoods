@@ -19,7 +19,7 @@ import { ProductType } from "@/types/product.t";
 import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -35,6 +35,7 @@ export default function Order() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const name = searchParams.get("name");
+  const router = useRouter();
   const { data: products } = useSWR<ProductType[]>("/product/all", fetcher);
   const {
     control,
@@ -92,13 +93,19 @@ export default function Order() {
       subtotal += Number(item.price) * Number(item.quantity);
 
       if (index !== data.cart!!.length - 1) {
-        sku += product.sku + " - ";
+        sku += product.sku + " & ";
       } else {
         sku += product.sku;
       }
     });
 
     total = subtotal;
+
+    if (total === 0) {
+      toast.error("Error submitting order");
+      router.refresh();
+      return;
+    }
 
     const order = {
       name: data.name,
