@@ -48,19 +48,20 @@ export default function Order() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    // @ts-ignore
-    name: "order",
+    name: "cart",
   });
 
   const { trigger, isMutating } = useSWRMutation("/order/add", addRequest);
   const { showStatus } = useStatus();
 
+  // auto append first array field
   useEffect(() => {
     if (fields.length === 0) {
       append({});
     }
   }, [append, fields.length]);
 
+  // order submission
   const onSubmit: SubmitHandler<OrderType> = async (data) => {
     if (!data.cart || data.cart?.length === 0) {
       toast.error("No products added");
@@ -109,6 +110,7 @@ export default function Order() {
       total,
       status: "WAITING",
       sku: sku,
+      note: data.note,
       sellerName: name,
       sellerId: id,
     };
@@ -176,6 +178,21 @@ export default function Order() {
             <span className="text-xs text-red-700">
               {errors.address.message}
             </span>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium" htmlFor="note">
+            Note
+          </label>
+          <Input
+            type="text"
+            id="note"
+            placeholder="Enter note"
+            {...register("note")}
+          />
+          {errors.note && (
+            <span className="text-xs text-red-700">{errors.note.message}</span>
           )}
         </div>
 

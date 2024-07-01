@@ -41,6 +41,7 @@
     "clsx": "^2.1.0",
     "cookies-next": "^4.1.1",
     "date-fns": "^3.3.1",
+    "dayjs": "^1.11.11",
     "jose": "^5.2.3",
     "jsonwebtoken": "^8.5.1",
     "lucide-react": "^0.335.0",

@@ -3,13 +3,14 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import useSWRMutation from "swr/mutation";
 import updateRequest from "@/https/update-request";
 import useStatus from "@/hooks/useStatus";
+import clsx from "clsx";
 
 export default function ChangeConfirmationStatus({
   id,
   confirm,
 }: {
   id?: string;
-  confirm?: boolean;
+  confirm?: string;
 }) {
   const { trigger, isMutating } = useSWRMutation(
     `/order/change-confirm-status/${id}`,
@@ -21,18 +22,39 @@ export default function ChangeConfirmationStatus({
     <ConfirmationDialog
       alertText="This action will change confirm status"
       action={async () => {
-        const res = await trigger({ confirm: !confirm });
+        let updateValue: string;
+
+        switch (confirm) {
+          case "OK":
+            updateValue = "HOLD";
+            break;
+          case "NO":
+            updateValue = "OK";
+            break;
+          default:
+            updateValue = "NO";
+        }
+
+        const res = await trigger({ confirm: updateValue });
         showStatus("/order", "Successfully updated", res);
       }}
     >
       <Button variant={"outline"} className="font-bold">
-        {confirm && !isMutating ? (
-          <p className="text-green-600">OK</p>
+        {isMutating ? (
+          "Loading.."
         ) : (
-          <p className="text-red-600">NO</p>
+          <p
+            className={clsx(
+              confirm === "OK"
+                ? "text-green-700"
+                : confirm === "NO"
+                  ? "text-red-700"
+                  : "text-yellow-600",
+            )}
+          >
+            {confirm}
+          </p>
         )}
-
-        {isMutating && "Loading.."}
       </Button>
     </ConfirmationDialog>
   );

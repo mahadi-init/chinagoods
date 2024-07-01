@@ -104,11 +104,14 @@ export default function Orders() {
       </div>
 
       <div className="mt-8">
-        <p className="text-center text-2xl font-bold">Mini Order</p>
+        <p className="text-center text-2xl font-bold">
+          Mini Order (Only NO Will be shown by default)
+        </p>
         <OrderUIWrapper
           route="/order"
-          columns={orderColumn}
+          columns={orderColumn as any}
           confirmValue="NO"
+          statusValue="WAITING"
         />
       </div>
     </div>

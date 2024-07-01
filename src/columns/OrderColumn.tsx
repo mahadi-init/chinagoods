@@ -6,9 +6,11 @@ import OrderConfirmationDialog from "@/components/native/OrderConfirmationDialog
 import { OrderType } from "@/types/order.t";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
-import clsx from "clsx";
-import { ReceiptText, Send } from "lucide-react";
+import { MapPinnedIcon, PenIcon, ReceiptText, Send } from "lucide-react";
 import Link from "next/link";
+import ChangeOrderStatus from "@/components/native/ChangeOrderStatus";
+import { MultipleHoverToolkit } from "@/components/native/MutipleHoverToolkit";
+import { getFormattedDate } from "@/utils/get-formatted-date";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
@@ -23,6 +25,13 @@ export const orderColumn: ColumnDef<OrderType>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "note",
+  //   header: "NOTE",
+  //   cell: ({ row }) => {
+  //     return <p>{row.original.note?.slice(0, 15)}...</p>;
+  //   },
+  // },
   {
     accessorKey: "invoice",
     header: "INVOICE",
@@ -65,6 +74,24 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      return (
+        <MultipleHoverToolkit
+          content={
+            <div>
+              <p>{row.original.address}</p>
+              <p>{row.original.note}</p>
+            </div>
+          }
+        >
+          <p>{row.original.name}</p>
+        </MultipleHoverToolkit>
+      );
+    },
+  },
+  {
+    accessorKey: "phone",
+    header: "CUSTOMER PHONE",
   },
   {
     accessorKey: "phone",
@@ -78,13 +105,13 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "Date",
     header: "DATE",
     cell: ({ row }) => {
       return (
         <p className="font-medium">
           {/* @ts-ignore */}
-          {new Date(row.original.createdAt).toDateString()}
+          {getFormattedDate(new Date(row.original.createdAt))}
         </p>
       );
     },
@@ -140,7 +167,11 @@ export const orderColumn: ColumnDef<OrderType>[] = [
       }
 
       return (
-        <p className={clsx(color, "font-semibold")}>{row.original.status}</p>
+        <ChangeOrderStatus
+          id={row.original._id}
+          status={row.original.status}
+          color={color}
+        />
       );
     },
   },
@@ -148,6 +179,13 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex gap-8">
+        {row.original.status === "WAITING" && (
+          <HoverToolkit text="Edit">
+            <Link href={`/dashboard/order/edit/${row.original._id}`}>
+              <PenIcon size={18} />
+            </Link>
+          </HoverToolkit>
+        )}
         {row.original.status === "WAITING" && (
           <OrderConfirmationDialog
             alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}

@@ -14,11 +14,12 @@ interface TableUIWrapperProps<T> {
   route: string;
   columns: ColumnDef<T, unknown>[];
   confirmValue?: string | null;
+  statusValue?: string | null;
 }
 
 export default function OrderUIWrapper<
   T extends { status?: string; confirm?: boolean },
->({ route, columns, confirmValue }: TableUIWrapperProps<T>) {
+>({ route, columns, confirmValue, statusValue }: TableUIWrapperProps<T>) {
   const [temp, setTemp] = useState<string>();
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -28,7 +29,7 @@ export default function OrderUIWrapper<
   const index = searchParams.get("index") ?? "1";
   const limit = searchParams.get("limit") ?? "25";
   const search = searchParams.get("search");
-  const status = searchParams.get("status") ?? "WAITING";
+  const status = searchParams.get("status") ?? statusValue;
   const confirm = searchParams.get("confirm") ?? confirmValue;
   const filterBy = searchParams.get("filterBy") ?? "default";
 
@@ -126,6 +127,9 @@ export default function OrderUIWrapper<
               <option className="text-green-600" value="OK">
                 OK
               </option>
+              <option className="text-yellow-600" value="HOLD">
+                HOLD
+              </option>
               <option className="text-red-600" value="NO">
                 NO
               </option>
@@ -136,7 +140,7 @@ export default function OrderUIWrapper<
             <select
               onChange={(e) => handleStatus(e.target.value)}
               className="mt-0.5 rounded-md bg-gray-100 p-2"
-              defaultValue={status}
+              defaultValue={status as string}
             >
               <option value="ALL">ALL</option>
               <option className="text-sky-600" value="WAITING">

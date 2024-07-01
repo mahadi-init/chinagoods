@@ -105,6 +105,7 @@ export default function Order() {
       total,
       status: "WAITING",
       sku: sku,
+      note: data.note,
       sellerName: localStorage.getItem("authName") as string,
       sellerId: localStorage.getItem("authId") as string,
     };
@@ -168,6 +169,21 @@ export default function Order() {
             <span className="text-xs text-red-700">
               {errors.address.message}
             </span>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium" htmlFor="note">
+            Note
+          </label>
+          <Input
+            type="text"
+            id="note"
+            placeholder="Enter note"
+            {...register("note")}
+          />
+          {errors.note && (
+            <span className="text-xs text-red-700">{errors.note.message}</span>
           )}
         </div>
 

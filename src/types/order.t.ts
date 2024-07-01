@@ -27,7 +27,7 @@ export const OrderSchema = z
     sellerName: z.string(),
     sellerId: z.string(),
     status: z.string(),
-    confirm: z.boolean(),
+    confirm: z.string(),
     createdAt: z.date(),
     updatedAt: z.date(),
   })
