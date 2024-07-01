@@ -32,20 +32,20 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   //     return <p>{row.original.note?.slice(0, 15)}...</p>;
   //   },
   // },
-  {
-    accessorKey: "invoice",
-    header: "INVOICE",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/dashboard/order/details/${row.original._id}`}
-          className="cursor-pointer font-medium underline"
-        >
-          # {getLastSixDigit(row.original._id)}
-        </Link>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "invoice",
+  //   header: "INVOICE",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Link
+  //         href={`/dashboard/order/details/${row.original._id}`}
+  //         className="cursor-pointer font-medium underline"
+  //       >
+  //         # {getLastSixDigit(row.original._id)}
+  //       </Link>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "sku",
     header: "SKU",
@@ -88,10 +88,6 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         </MultipleHoverToolkit>
       );
     },
-  },
-  {
-    accessorKey: "phone",
-    header: "CUSTOMER PHONE",
   },
   {
     accessorKey: "phone",

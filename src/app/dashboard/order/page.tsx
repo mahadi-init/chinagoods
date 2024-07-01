@@ -5,10 +5,7 @@ import OrderUIWrapper from "@/ui/OrderUIWrapper";
 export default async function Orders() {
   return (
     <>
-      <PageTop
-        title="Orders (All Waiting will be shown by default)"
-        showSubTitle={false}
-      />
+      <PageTop title="Orders (All Orders)" showSubTitle={false} />
       <OrderUIWrapper route="/order" columns={orderColumn as any} />
     </>
   );
