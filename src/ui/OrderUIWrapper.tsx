@@ -44,6 +44,7 @@ export default function OrderUIWrapper<
     if (!temp && filterBy === "search") {
       const params = new URLSearchParams(searchParams);
 
+      params.set("index", "1");
       params.delete("search");
       params.set("filterBy", "default");
       replace(`${pathname}?${params.toString()}`);
@@ -63,6 +64,7 @@ export default function OrderUIWrapper<
       const params = new URLSearchParams(searchParams);
 
       if (temp) {
+        params.set("index", "1");
         params.set("filterBy", "search");
         params.set("search", temp.trim() as string);
       } else {
@@ -75,6 +77,7 @@ export default function OrderUIWrapper<
   const handleStatus = (status: string) => {
     const params = new URLSearchParams(searchParams);
 
+    params.set("index", "1");
     params.set("filterBy", "status");
     params.set("status", status as string);
 
@@ -84,6 +87,7 @@ export default function OrderUIWrapper<
   const handleConfirm = (confirm: string) => {
     const params = new URLSearchParams(searchParams);
 
+    params.set("index", "1");
     params.set("filterBy", "confirm");
     params.set("confirm", confirm as string);
 

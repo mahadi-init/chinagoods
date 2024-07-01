@@ -42,6 +42,7 @@ export default function SellerOrderUIWrapper<
     if (!temp && filterBy === "search") {
       const params = new URLSearchParams(searchParams);
 
+      params.set("index", "1");
       params.delete("search");
       params.set("filterBy", "default");
       replace(`${pathname}?${params.toString()}`);
@@ -61,6 +62,7 @@ export default function SellerOrderUIWrapper<
       const params = new URLSearchParams(searchParams);
 
       if (temp) {
+        params.set("index", "1");
         params.set("filterBy", "search");
         params.set("search", temp.trim() as string);
       } else {
@@ -73,6 +75,7 @@ export default function SellerOrderUIWrapper<
   const handleStatus = (status: string) => {
     const params = new URLSearchParams(searchParams);
 
+    params.set("index", "1");
     params.set("filterBy", "status");
     params.set("status", status as string);
 
