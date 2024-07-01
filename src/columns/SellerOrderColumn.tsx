@@ -7,21 +7,6 @@ import Link from "next/link";
 
 export const sellerOrderColumn: ColumnDef<OrderType>[] = [
   {
-    accessorKey: "invoice",
-    header: "INVOICE",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/order/details/${row.original._id}`}
-          className="cursor-pointer font-medium underline"
-          target="_blank"
-        >
-          # {getLastSixDigit(row.original._id)}
-        </Link>
-      );
-    },
-  },
-  {
     accessorKey: "sku",
     header: "SKU",
     cell: ({ row }) => {
@@ -59,27 +44,27 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
       );
     },
   },
-  {
-    accessorKey: "trackingLink",
-    header: "TRACKING",
-    cell: ({ row }) => {
-      return (
-        row.original.trackingLink && (
-          <Link
-            href={row.original.trackingLink}
-            className="font-medium text-blue-700"
-            target="_blank"
-          >
-            Visit
-          </Link>
-        )
-      );
-    },
-  },
-  {
-    accessorKey: "consignmentId",
-    header: "CONSIGNMENT",
-  },
+  // {
+  //   accessorKey: "trackingLink",
+  //   header: "TRACKING",
+  //   cell: ({ row }) => {
+  //     return (
+  //       row.original.trackingLink && (
+  //         <Link
+  //           href={row.original.trackingLink}
+  //           className="font-medium text-blue-700"
+  //           target="_blank"
+  //         >
+  //           Visit
+  //         </Link>
+  //       )
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "consignmentId",
+  //   header: "CONSIGNMENT",
+  // },
   {
     accessorKey: "status",
     header: "STATUS",
