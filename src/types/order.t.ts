@@ -4,8 +4,8 @@ export const CartItemSchema = z
   .object({
     _id: z.string(),
     name: z.string(),
-    price: z.string().min(1, "Price must be more than 0"),
-    quantity: z.string().min(1, "Quantity must be at least 1"),
+    price: z.coerce.number().gt(0, "must be > 0"),
+    quantity: z.coerce.number().gt(0, "must be > 0"),
     img: z.string(),
     sku: z.string(),
   })

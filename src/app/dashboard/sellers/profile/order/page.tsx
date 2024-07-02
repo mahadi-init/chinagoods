@@ -35,7 +35,6 @@ export default function Order() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const name = searchParams.get("name");
-  const router = useRouter();
   const { data: products } = useSWR<ProductType[]>("/product/all", fetcher);
   const {
     control,
@@ -103,7 +102,6 @@ export default function Order() {
 
     if (total === 0) {
       toast.error("Error submitting order");
-      router.refresh();
       return;
     }
 

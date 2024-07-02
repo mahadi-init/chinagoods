@@ -32,7 +32,6 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 export default function Order() {
-  const router = useRouter();
   const { data: products } = useSWR<ProductType[]>("/product/all", fetcher);
   const {
     control,
@@ -98,7 +97,6 @@ export default function Order() {
 
     if (total === 0) {
       toast.error("Error submitting order");
-      router.refresh();
       return;
     }
 
