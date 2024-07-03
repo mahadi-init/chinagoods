@@ -4,23 +4,30 @@ import FetchErrorMessage from "@/components/native/FetchErrorMessage";
 import SixSkeleton from "@/components/native/SixSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useStatus from "@/hooks/useStatus";
 import { fetcher } from "@/https/get-request";
+import updateRequest from "@/https/update-request";
 import { ColumnDef } from "@tanstack/react-table";
+import clsx from "clsx";
+import { RefreshCwIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 interface TableUIWrapperProps<T> {
+  auth?: string;
   route: string;
   columns: ColumnDef<T, unknown>[];
 }
 
 export default function SellerOrderUIWrapper<
   T extends { status?: string; confirm?: boolean },
->({ route, columns }: TableUIWrapperProps<T>) {
+>({ auth, route, columns }: TableUIWrapperProps<T>) {
   const [temp, setTemp] = useState<string>();
   const { replace } = useRouter();
   const pathname = usePathname();
+  const { showStatus } = useStatus();
 
   // using search params
   const searchParams = useSearchParams();
@@ -33,8 +40,14 @@ export default function SellerOrderUIWrapper<
 
   // data fetching
   const { data, error, isLoading } = useSWR<T[]>(
-    `${route}&page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
+    `${route}?auth=${auth}&page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
     fetcher,
+  );
+
+  // refresh all data
+  const { trigger, isMutating } = useSWRMutation(
+    `${route}/refresh?auth=${auth}`,
+    updateRequest,
   );
 
   // run when search value is empty
@@ -96,6 +109,11 @@ export default function SellerOrderUIWrapper<
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const refreshDataInfo = async () => {
+    const res = await trigger({});
+    showStatus("/order", "Data refreshed successfully", res);
+  };
+
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
       <div className="mb-4 flex items-center justify-between">
@@ -130,6 +148,16 @@ export default function SellerOrderUIWrapper<
               </option>
             </select>
           </div>
+
+          <Button
+            onClick={refreshDataInfo}
+            variant="outline"
+            disabled={isMutating}
+          >
+            <div className={clsx(isMutating && "animate-spin")}>
+              <RefreshCwIcon size={18} />
+            </div>
+          </Button>
         </div>
       </div>
 

@@ -4,11 +4,16 @@ import FetchErrorMessage from "@/components/native/FetchErrorMessage";
 import SixSkeleton from "@/components/native/SixSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useStatus from "@/hooks/useStatus";
 import { fetcher } from "@/https/get-request";
+import updateRequest from "@/https/update-request";
 import { ColumnDef } from "@tanstack/react-table";
+import clsx from "clsx";
+import { RefreshCwIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 interface TableUIWrapperProps<T> {
   route: string;
@@ -23,6 +28,7 @@ export default function OrderUIWrapper<
   const [temp, setTemp] = useState<string>();
   const { replace } = useRouter();
   const pathname = usePathname();
+  const { showStatus } = useStatus();
 
   // using search params
   const searchParams = useSearchParams();
@@ -37,6 +43,12 @@ export default function OrderUIWrapper<
   const { data, error, isLoading } = useSWR<T[]>(
     `${route}/page?page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
     fetcher,
+  );
+
+  // refresh all data
+  const { trigger, isMutating } = useSWRMutation(
+    `${route}/refresh`,
+    updateRequest,
   );
 
   // run when search value is empty
@@ -108,6 +120,11 @@ export default function OrderUIWrapper<
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const refreshDataInfo = async () => {
+    const res = await trigger({});
+    showStatus("/order", "Data refreshed successfully", res);
+  };
+
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
       <div className="mb-4 flex items-center justify-between">
@@ -161,6 +178,16 @@ export default function OrderUIWrapper<
               </option>
             </select>
           </div>
+
+          <Button
+            onClick={refreshDataInfo}
+            variant="outline"
+            disabled={isMutating}
+          >
+            <div className={clsx(isMutating && "animate-spin")}>
+              <RefreshCwIcon size={18} />
+            </div>
+          </Button>
         </div>
       </div>
 

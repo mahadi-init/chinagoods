@@ -24,7 +24,8 @@ export default function Seller() {
 
       {auth && (
         <SellerOrderUIWrapper
-          route={`/seller/orders?auth=${auth}`}
+          auth={auth}
+          route={`/seller/orders`}
           columns={sellerOrderColumn as any}
         />
       )}
