@@ -66,7 +66,7 @@ export default function SellerOrderUIWrapper<
       }
       replace(`${pathname}?${params.toString()}`);
     },
-    500,
+    300,
   );
 
   if (error) {

@@ -67,7 +67,7 @@ export default function OrderUIWrapper<
       }
       replace(`${pathname}?${params.toString()}`);
     },
-    500,
+    300,
   );
 
   if (error) {
