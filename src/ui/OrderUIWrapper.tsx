@@ -11,9 +11,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { RefreshCwIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import { useDebouncedCallback } from "use-debounce";
 
 interface TableUIWrapperProps<T> {
   route: string;
@@ -51,40 +52,27 @@ export default function OrderUIWrapper<
     updateRequest,
   );
 
-  // run when search value is empty
-  useEffect(() => {
-    if (!temp && filterBy === "search") {
+  // handle search with 300 ms delay count
+  const handleSearch = useDebouncedCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
       const params = new URLSearchParams(searchParams);
-
       params.set("index", "1");
-      params.delete("search");
-      params.set("filterBy", "default");
-      replace(`${pathname}?${params.toString()}`);
-    }
-  }, [filterBy, pathname, replace, searchParams, temp]);
 
-  if (isLoading) {
-    return <SixSkeleton />;
-  }
-
-  if (error) {
-    return <FetchErrorMessage error={error} />;
-  }
-
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const params = new URLSearchParams(searchParams);
-
-      if (temp) {
-        params.set("index", "1");
+      if (temp && temp !== "") {
         params.set("filterBy", "search");
         params.set("search", temp.trim() as string);
       } else {
         params.delete("search");
+        params.set("filterBy", "default");
       }
       replace(`${pathname}?${params.toString()}`);
-    }
-  };
+    },
+    500,
+  );
+
+  if (error) {
+    return <FetchErrorMessage error={error} />;
+  }
 
   const handleStatus = (status: string) => {
     const params = new URLSearchParams(searchParams);
