@@ -1,6 +1,5 @@
 "use client";
 import { OrderType } from "@/types/order.t";
-import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import Link from "next/link";
@@ -47,23 +46,23 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "trackingLink",
-  //   header: "TRACKING",
-  //   cell: ({ row }) => {
-  //     return (
-  //       row.original.trackingLink && (
-  //         <Link
-  //           href={row.original.trackingLink}
-  //           className="font-medium text-blue-700"
-  //           target="_blank"
-  //         >
-  //           Visit
-  //         </Link>
-  //       )
-  //     );
-  //   },
-  // },
+  {
+    accessorKey: "trackingLink",
+    header: "TRACKING",
+    cell: ({ row }) => {
+      return (
+        row.original.trackingLink && (
+          <Link
+            href={row.original.trackingLink}
+            className="font-medium text-blue-700"
+            target="_blank"
+          >
+            Visit
+          </Link>
+        )
+      );
+    },
+  },
   // {
   //   accessorKey: "consignmentId",
   //   header: "CONSIGNMENT",
