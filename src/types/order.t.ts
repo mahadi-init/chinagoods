@@ -4,8 +4,8 @@ export const CartItemSchema = z
   .object({
     _id: z.string(),
     name: z.string(),
-    price: z.coerce.number().gt(0, "must be > 0"),
-    quantity: z.coerce.number().gt(0, "must be > 0"),
+    price: z.string().min(1, "Can't be empty"),
+    quantity: z.string().min(1, "Can't be empty"),
     img: z.string(),
     sku: z.string(),
   })
@@ -34,4 +34,3 @@ export const OrderSchema = z
   .partial();
 
 export type OrderType = z.infer<typeof OrderSchema>;
-

@@ -153,25 +153,6 @@ export default function Sidenav(): JSX.Element {
                   </div>
                 </Link>
               </li>
-
-              <li className="px-3">
-                <Link
-                  href="/dashboard/review"
-                  onClick={hideSideNav}
-                  className={clsx(
-                    "flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-rose-50 hover:text-rose-500 focus:bg-rose-50",
-                    pathname.includes("review") &&
-                      "bg-purple-100 text-purple-800",
-                  )}
-                >
-                  <div className="flex items-center self-center">
-                    <Star size={18} />
-                  </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                    Reviews
-                  </div>
-                </Link>
-              </li>
             </ul>
           </div>
         </nav>

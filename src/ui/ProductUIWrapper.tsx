@@ -6,7 +6,7 @@ import TablePagination from "@/components/native/TablePagination";
 import { Input } from "@/components/ui/input";
 import { fetcher } from "@/https/get-request";
 import { ColumnDef } from "@tanstack/react-table";
-import { BadgePlus } from "lucide-react";
+import { BadgePlus, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -29,7 +29,7 @@ export default function ProductUiWrapper<T extends { status?: string }>({
   // fetch all data using pagination
   const { data, error, isLoading } = useSWR<T[]>(
     `${route}/page?page=${index}&limit=${limit}`,
-    fetcher
+    fetcher,
   );
 
   // fetch total number of pages
@@ -42,7 +42,7 @@ export default function ProductUiWrapper<T extends { status?: string }>({
   // fetch filtered data
   const { data: filter, isLoading: isSearchLoading } = useSWR<T[]>(
     search && `${route}/search?q=${search}`,
-    fetcher
+    fetcher,
   );
 
   // filter by search
@@ -81,34 +81,19 @@ export default function ProductUiWrapper<T extends { status?: string }>({
   };
 
   return (
-    <div className="w-full mt-4 flex flex-col gap-4 ">
-      <div className="mb-4 flex items-center justify-between ">
+    <div className="mt-4 flex w-full flex-col gap-4">
+      <div className="mb-4 flex items-center justify-between">
         <Input
           className="w-fit"
           placeholder="filter item.."
           onChange={(e) => setTemp(e.target.value)}
         />
         <div className="flex gap-2">
-          <select
-            onChange={(e) => handleDropdown(e.target.value)}
-            className="mt-0.5 p-2 bg-gray-100 rounded-md"
-          >
-            <option value="ALL">ALL</option>
-            <option className="text-green-600" value="IN-STOCK">
-              IN STOCK
-            </option>
-            <option className="text-red-500" value="OUT-OF-STOCK">
-              OUT OF STOCK
-            </option>
-            <option className="text-yellow-600" value="DISCONTINUED">
-              DISCONTINUED
-            </option>
-          </select>
           <Link
             href="/dashboard/product/add"
-            className="flex items-center justify-center p-2 bg-gray-100 rounded-md"
+            className="flex items-center justify-center rounded-md bg-gray-100 p-2"
           >
-            <BadgePlus />
+            <PlusIcon />
           </Link>
         </div>
       </div>
@@ -118,7 +103,7 @@ export default function ProductUiWrapper<T extends { status?: string }>({
           <>
             <DataTable columns={columns} data={filteredItems} />
             <div className="mt-8 flex items-center justify-between">
-              <div className="-mt-6 text-gray-700 font-medium text-sm flex justify-center gap-4">
+              <div className="-mt-6 flex justify-center gap-4 text-sm font-medium text-gray-700">
                 <p>Total pages : </p>
                 <p>{isTotalPagesLoading ? "Loading..." : totalPages}</p>
                 <p className="text-red-700">{totalPagesError && "Failed"}</p>

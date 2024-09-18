@@ -1,11 +1,9 @@
 "use client";
-import ProductDetailsDialog from "@/app/dashboard/product/_components/product-details-dialog";
 import DeleteItem from "@/components/native/DeleteItem";
 import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { ProductType } from "@/types/product.t";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
-import clsx from "clsx";
 
 export const productColumn: ColumnDef<ProductType>[] = [
   {
@@ -18,7 +16,6 @@ export const productColumn: ColumnDef<ProductType>[] = [
   {
     accessorKey: "name",
     header: "NAME",
-    cell: ({ row }) => <ProductDetailsDialog id={row.original._id} />,
   },
   {
     accessorKey: "img",
@@ -46,29 +43,6 @@ export const productColumn: ColumnDef<ProductType>[] = [
     accessorKey: "quantity",
     header: "QUANTITY",
   },
-  {
-    accessorKey: "sellCount",
-    header: "Sells",
-  },
-  {
-    accessorKey: "status",
-    header: "STATUS",
-    cell: ({ row }) => {
-      return (
-        <p
-          className={clsx(
-            row.original.status === "IN-STOCK"
-              ? "text-green-500"
-              : "text-red-500",
-            "font-medium",
-          )}
-        >
-          {row.original.status}
-        </p>
-      );
-    },
-  },
-
   {
     id: "actions",
     cell: ({ row }) => (

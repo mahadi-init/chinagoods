@@ -19,7 +19,7 @@ import { ProductType } from "@/types/product.t";
 import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -77,6 +77,9 @@ export default function Order() {
     data.cart.forEach((item, index) => {
       const product = products?.find((p) => p._id === item._id);
 
+      const price = convertBengaliToEnglish(item.quantity as string);
+      const quantity = convertBengaliToEnglish(item.quantity as string);
+
       if (!product) {
         return;
       }
@@ -84,12 +87,13 @@ export default function Order() {
       cart.push({
         _id: product._id,
         name: product.name,
-        price: item.price,
-        quantity: item.quantity,
+        price: price,
+        quantity: quantity,
         img: product.img,
         sku: product.sku,
       });
-      subtotal += Number(item.price) * Number(item.quantity);
+
+      subtotal += Number(price) * Number(quantity);
 
       if (index !== data.cart!!.length - 1) {
         sku += product.sku + " & ";
@@ -161,7 +165,7 @@ export default function Order() {
           <Input
             type="text"
             id="phone"
-            placeholder="Enter phone"
+            placeholder="Enter phone (bn/en)"
             {...register("phone", { required: true })}
           />
           {errors.phone && (
@@ -248,9 +252,8 @@ export default function Order() {
 
               <div>
                 <Input
-                  type="number"
                   id="quantity"
-                  placeholder="Enter quantity"
+                  placeholder="Quantity (bn/en)"
                   {...register(`cart.${index}.quantity`, {
                     required: true,
                   })}
@@ -264,9 +267,8 @@ export default function Order() {
 
               <div>
                 <Input
-                  type="number"
                   id="price"
-                  placeholder="Enter Price"
+                  placeholder="Price (bn/en)"
                   {...register(`cart.${index}.price`, {
                     required: true,
                   })}
