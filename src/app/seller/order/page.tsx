@@ -16,10 +16,12 @@ import addRequest from "@/https/add-request";
 import { fetcher } from "@/https/get-request";
 import { OrderSchema, OrderType } from "@/types/order.t";
 import { ProductType } from "@/types/product.t";
-import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
+import {
+  convertBengaliToEnglish,
+  convertBengaliToEnglishNumber,
+} from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -71,6 +73,7 @@ export default function Order() {
 
     data.cart.forEach((item, index) => {
       const product = products?.find((p) => p._id === item._id);
+      const price = convertBengaliToEnglishNumber(item.price?.trim() as string);
 
       if (!product) {
         return;
@@ -79,12 +82,12 @@ export default function Order() {
       cart.push({
         _id: product._id,
         name: product.name,
-        price: item.price,
-        quantity: item.quantity,
+        price: price,
+        quantity: 1,
         img: product.img,
         sku: product.sku,
       });
-      subtotal += Number(item.price) * Number(item.quantity);
+      subtotal += Number(price);
 
       if (index !== data.cart!!.length - 1) {
         sku += product.sku + " - ";
@@ -102,7 +105,7 @@ export default function Order() {
 
     const order = {
       name: data.name,
-      phone: convertBengaliToEnglish(data.phone as string),
+      phone: convertBengaliToEnglish(data.phone?.trim() as string),
       address: data.address,
       cart,
       shippingCost,
@@ -152,7 +155,7 @@ export default function Order() {
           <Input
             type="text"
             id="phone"
-            placeholder="Enter phone"
+            placeholder="Enter phone (bn/en)"
             {...register("phone", { required: true })}
           />
           {errors.phone && (
@@ -245,25 +248,8 @@ export default function Order() {
 
               <div>
                 <Input
-                  type="number"
-                  id="quantity"
-                  placeholder="Enter quantity"
-                  {...register(`cart.${index}.quantity`, {
-                    required: true,
-                  })}
-                />
-                {errors.cart?.[index]?.quantity && (
-                  <span className="text-xs text-red-700">
-                    {errors.cart?.[index]?.quantity?.message}
-                  </span>
-                )}
-              </div>
-
-              <div>
-                <Input
-                  type="number"
                   id="price"
-                  placeholder="Enter Price"
+                  placeholder="Enter Price (bn/en)"
                   {...register(`cart.${index}.price`, {
                     required: true,
                   })}

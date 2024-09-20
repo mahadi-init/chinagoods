@@ -40,8 +40,8 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
     cell: ({ row }) => {
       return (
         <p className="font-medium">
-          {/* @ts-ignore */}
-          {new Date(row.original.createdAt).toDateString()}
+          {/* @ts-expect-error */}
+          {new Date(row.original.createdAt).toLocaleDateString("en-GB")}
         </p>
       );
     },
@@ -83,17 +83,17 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
           break;
 
         case "DELIVERED":
-        case "PARTIAL_DELIVERED":
+          // case "PARTIAL_DELIVERED":
           color = "text-green-600";
           break;
 
         case "CANCELLED":
-        case "HOLD":
+          // case "HOLD":
           color = "text-red-600";
           break;
 
         default:
-          color = "text-pink-600";
+          color = "text-purple-600";
       }
 
       return (

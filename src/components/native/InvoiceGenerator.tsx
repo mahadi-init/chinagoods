@@ -6,7 +6,7 @@ import { Card } from "../ui/card";
 function InvoiceGenerator({ data }: { data?: OrderType }) {
   return (
     <Card className="mb-10 w-48 p-2">
-      <p className="text-center font-bold">China Goods</p>
+      <p className="text-center font-bold">China Cup</p>
       <p className="text-center font-medium">
         # {data?.consignmentId ?? "ID NOT SET"}
       </p>

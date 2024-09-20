@@ -1,4 +1,4 @@
-# China Goods
+# China Cup
 
 An e-commerce admin panel
 

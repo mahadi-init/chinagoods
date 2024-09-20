@@ -16,7 +16,10 @@ import addRequest from "@/https/add-request";
 import { fetcher } from "@/https/get-request";
 import { OrderSchema, OrderType } from "@/types/order.t";
 import { ProductType } from "@/types/product.t";
-import { convertBengaliToEnglish } from "@/utils/convert-bangla-english";
+import {
+  convertBengaliToEnglish,
+  convertBengaliToEnglishNumber,
+} from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -76,9 +79,7 @@ export default function Order() {
 
     data.cart.forEach((item, index) => {
       const product = products?.find((p) => p._id === item._id);
-
-      const price = convertBengaliToEnglish(item.quantity as string);
-      const quantity = convertBengaliToEnglish(item.quantity as string);
+      const price = convertBengaliToEnglishNumber(item.price?.trim() as string);
 
       if (!product) {
         return;
@@ -88,12 +89,12 @@ export default function Order() {
         _id: product._id,
         name: product.name,
         price: price,
-        quantity: quantity,
+        quantity: 1,
         img: product.img,
         sku: product.sku,
       });
 
-      subtotal += Number(price) * Number(quantity);
+      subtotal += Number(price);
 
       if (index !== data.cart!!.length - 1) {
         sku += product.sku + " & ";
@@ -249,21 +250,6 @@ export default function Order() {
                   </Select>
                 )}
               />
-
-              <div>
-                <Input
-                  id="quantity"
-                  placeholder="Quantity (bn/en)"
-                  {...register(`cart.${index}.quantity`, {
-                    required: true,
-                  })}
-                />
-                {errors.cart?.[index]?.quantity && (
-                  <span className="text-xs text-red-700">
-                    {errors.cart?.[index]?.quantity?.message}
-                  </span>
-                )}
-              </div>
 
               <div>
                 <Input
