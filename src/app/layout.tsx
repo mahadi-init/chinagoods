@@ -3,16 +3,12 @@ import { Inter } from "next/font/google";
 import React, { Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "China Goods",
   description: "An e-commerce site",
-  icons: {
-    icon: "/logo.jpg",
-  },
 };
 
 export default async function RootLayout({
