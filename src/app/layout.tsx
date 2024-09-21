@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "China Goods",
   description: "An e-commerce site",
   icons: {
-    icon: "/logo.png",
+    icon: "/logo.jpg",
   },
 };
 

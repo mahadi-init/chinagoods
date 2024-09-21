@@ -21,7 +21,6 @@ import {
   convertBengaliToEnglishNumber,
 } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import {
@@ -229,17 +228,14 @@ export default function Order() {
                               value={product._id as string}
                             >
                               <div className="flex items-center gap-2">
-                                <Image
-                                  src={product.img ?? ""}
-                                  alt="product image"
-                                  width={24}
-                                  height={24}
-                                  className="rounded-sm"
-                                />
                                 <div className="flex gap-4">
-                                  <p>TITLE: {product.name}</p>
-                                  <p>PRICE: {product.price}</p>
-                                  <p>SKU: {product.price}</p>
+                                  <p className="font-bold">{product.name}</p>
+                                  <p>{" - "}</p>
+                                  <p className="font-medium text-green-700">
+                                    {product.sku}
+                                  </p>
+                                  <p>{" - "}</p>
+                                  <p>{product.price} TK</p>
                                 </div>
                               </div>
                             </SelectItem>

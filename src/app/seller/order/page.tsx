@@ -21,7 +21,6 @@ import {
   convertBengaliToEnglishNumber,
 } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useEffect } from "react";
 import {
   useFieldArray,
@@ -198,7 +197,7 @@ export default function Order() {
         <label className="mb-1 block text-sm font-medium" htmlFor="product">
           Select Products <span className="text-red-500">*</span>
         </label>
-        <label className="-mt-10 mb-1 block text-xs">Name - Price -Sku</label>
+        <label className="-mt-10 mb-1 block text-xs">Name - Sku - Price</label>
         <div className="-mt-12 w-full">
           {fields.map((field, index) => (
             <div
@@ -222,19 +221,14 @@ export default function Order() {
                               value={product._id as string}
                             >
                               <div className="flex items-center gap-2">
-                                <Image
-                                  src={product.img ?? ""}
-                                  alt="product image"
-                                  width={24}
-                                  height={24}
-                                  className="rounded-sm"
-                                />
                                 <div className="flex gap-2">
-                                  <p>{product.name}</p>
+                                  <p className="font-bold">{product.name}</p>
                                   <p>{" - "}</p>
-                                  <p>{product.price}</p>
+                                  <p className="font-medium text-green-700">
+                                    {product.sku}
+                                  </p>
                                   <p>{" - "}</p>
-                                  <p>{product.price}</p>
+                                  <p>{product.price} TK</p>
                                 </div>
                               </div>
                             </SelectItem>

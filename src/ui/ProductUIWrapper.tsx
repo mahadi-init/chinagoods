@@ -43,6 +43,9 @@ export default function ProductUiWrapper<T extends { status?: string }>({
   const { data: filter, isLoading: isSearchLoading } = useSWR<T[]>(
     search && `${route}/search?q=${search}`,
     fetcher,
+    {
+      refreshInterval: 1000,
+    },
   );
 
   // filter by search

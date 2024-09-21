@@ -43,6 +43,10 @@ export default function SellerOrderUIWrapper<
   const { data, error, isLoading } = useSWR<T[]>(
     `${route}?auth=${auth}&page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
     fetcher,
+    {
+      refreshInterval: 1000,
+      revalidateOnFocus: true,
+    },
   );
 
   // refresh all data

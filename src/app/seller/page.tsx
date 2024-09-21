@@ -26,6 +26,9 @@ export default function Dashboard() {
   const { data } = useSWR<SellerDashboard>(
     auth && `/seller/orders/dashboard/${auth}`,
     fetcher,
+    {
+      refreshInterval: 1000,
+    },
   );
 
   return (

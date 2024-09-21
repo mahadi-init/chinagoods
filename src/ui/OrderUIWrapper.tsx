@@ -44,6 +44,10 @@ export default function OrderUIWrapper<
   const { data, error, isLoading } = useSWR<T[]>(
     `${route}/page?page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
     fetcher,
+    {
+      revalidateOnFocus: true,
+      refreshInterval: 1000,
+    },
   );
 
   // refresh all data
