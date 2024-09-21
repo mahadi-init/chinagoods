@@ -28,6 +28,7 @@ export const OrderSchema = z
     sellerId: z.string(),
     status: z.string(),
     confirm: z.string(),
+    duplicate: z.boolean(),
     createdAt: z.date(),
     updatedAt: z.date(),
   })

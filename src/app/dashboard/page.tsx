@@ -18,7 +18,7 @@ interface Dashboard extends SellerDashboard {}
 
 export default function Orders() {
   const { data, isLoading } = useSWR<Dashboard>("/order/overview", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
 
   return (

@@ -44,7 +44,7 @@ export default function SellerOrderUIWrapper<
     `${route}?auth=${auth}&page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
     fetcher,
     {
-      refreshInterval: 1000,
+      refreshInterval: 5000,
       revalidateOnFocus: true,
     },
   );

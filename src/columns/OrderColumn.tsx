@@ -6,11 +6,12 @@ import OrderConfirmationDialog from "@/components/native/OrderConfirmationDialog
 import { OrderType } from "@/types/order.t";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
-import { MapPinnedIcon, PenIcon, ReceiptText, Send } from "lucide-react";
+import { PenIcon, ReceiptText, Send } from "lucide-react";
 import Link from "next/link";
 import ChangeOrderStatus from "@/components/native/ChangeOrderStatus";
 import { MultipleHoverToolkit } from "@/components/native/MutipleHoverToolkit";
 import { getFormattedDate } from "@/utils/get-formatted-date";
+import PhoneSearch from "@/components/phone-search";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
@@ -22,6 +23,17 @@ export const orderColumn: ColumnDef<OrderType>[] = [
           id={row.original._id}
           confirm={row.original.confirm}
         />
+      );
+    },
+  },
+  {
+    accessorKey: "duplicate",
+    header: "Duplicate",
+    cell: ({ row }) => {
+      return (
+        <p className="font-bold text-red-700">
+          {row.original.duplicate && "YES"}
+        </p>
       );
     },
   },
@@ -94,7 +106,10 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "phone",
-    header: "CUSTOMER PHONE",
+    header: "PHONE",
+    cell: ({ row }) => {
+      return <PhoneSearch phone={row.original.phone} />;
+    },
   },
   {
     accessorKey: "total",

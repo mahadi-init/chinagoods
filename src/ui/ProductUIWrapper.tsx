@@ -44,7 +44,7 @@ export default function ProductUiWrapper<T extends { status?: string }>({
     search && `${route}/search?q=${search}`,
     fetcher,
     {
-      refreshInterval: 1000,
+      refreshInterval: 5000,
     },
   );
 

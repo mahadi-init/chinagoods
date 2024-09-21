@@ -27,7 +27,7 @@ export default function Dashboard() {
     auth && `/seller/orders/dashboard/${auth}`,
     fetcher,
     {
-      refreshInterval: 1000,
+      refreshInterval: 5000,
     },
   );
 

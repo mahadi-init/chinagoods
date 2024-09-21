@@ -46,7 +46,7 @@ export default function OrderUIWrapper<
     fetcher,
     {
       revalidateOnFocus: true,
-      refreshInterval: 1000,
+      refreshInterval: 5000,
     },
   );
 

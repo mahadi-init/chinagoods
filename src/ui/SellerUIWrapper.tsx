@@ -42,7 +42,7 @@ export default function SellerUIWrapper<T>({
     search && `${route}/search?q=${search}`,
     fetcher,
     {
-      refreshInterval: 1000,
+      refreshInterval: 5000,
     },
   );
 
