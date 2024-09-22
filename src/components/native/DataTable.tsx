@@ -19,9 +19,16 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-const color = (status: "WAITING" | "CANCELLED" | "DELIVERED") => {
+const color = (
+  status?: "WAITING" | "CANCELLED" | "DELIVERED",
+  duplicate?: boolean,
+) => {
   if (!status) {
     return;
+  }
+
+  if (duplicate) {
+    return "!text-red-900 font-semibold bg-red-300";
   }
 
   switch (status) {
@@ -78,7 +85,10 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={color(cell.row.getValue("status"))}
+                      className={color(
+                        cell.row.getValue("status"),
+                        cell.row.getValue("duplicate"),
+                      )}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

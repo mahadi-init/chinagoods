@@ -194,7 +194,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   {
     id: "actions",
     cell: ({ row }) => (
-      <div className="flex gap-8">
+      <div className="flex justify-end gap-8">
         {row.original.status === "WAITING" && (
           <HoverToolkit text="Edit">
             <Link href={`/dashboard/order/edit/${row.original._id}`}>
@@ -215,13 +215,11 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             <ReceiptText size={18} />
           </Link>
         </HoverToolkit>
-        <div className="flex items-center gap-8">
-          <DeleteItem
-            queryUrl={`/order/delete/${row.original._id}`}
-            validationTag="/order"
-            successMessage="Order deleted successfully"
-          />
-        </div>
+        <DeleteItem
+          queryUrl={`/order/delete/${row.original._id}`}
+          validationTag="/order"
+          successMessage="Order deleted successfully"
+        />
       </div>
     ),
   },
