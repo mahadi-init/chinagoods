@@ -1,19 +1,17 @@
 "use client";
 import SubmitButton from "@/components/native/SubmitButton";
 import { Input } from "@/components/ui/input";
-import addRequest from "@/https/add-request";
 import { AdminSchema, AdminType } from "@/types/admin.t";
 import { SellerType } from "@/types/seller.t";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setCookie } from "cookies-next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import useSWRMutation from "swr/mutation";
+import signin from "./action";
 
 export default function Login() {
-  const router = useRouter();
+  const [isMutating, startTransition] = useTransition();
   const {
     register,
     handleSubmit,
@@ -22,42 +20,15 @@ export default function Login() {
     resolver: zodResolver(AdminSchema),
   });
 
-  const { trigger, isMutating } = useSWRMutation(`/auth/login`, addRequest);
-
   const onSubmit: SubmitHandler<AdminType | SellerType> = async (data) => {
-    const res: {
-      success: boolean;
-      data: AdminType | SellerType;
-      token: string | undefined;
-      message: string | undefined;
-      role: "ADMIN" | "SELLER";
-    } = await trigger(data);
+    startTransition(async () => {
+      const res = await signin(data);
 
-    if (res.success === true) {
-      setCookie("auth", res.token, {
-        sameSite: "none",
-        secure: true,
-      });
-
-      localStorage.setItem("authId", res?.data?._id as string);
-      localStorage.setItem("authName", res?.data?.name as string);
-
-      toast.success(`Successfully Logged in as ${res.data.name}`);
-
-      if (res.role === "ADMIN") {
-        router.replace("/dashboard");
-        return;
+      if (!res.success) {
+        toast.error("Error signing in");
+      } else {
       }
-
-      if (res.role === "SELLER") {
-        router.replace("/seller");
-        return;
-      }
-
-      return;
-    }
-
-    toast.error(res.message);
+    });
   };
 
   return (

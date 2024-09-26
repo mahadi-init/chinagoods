@@ -2,17 +2,9 @@
 import DeleteItem from "@/components/native/DeleteItem";
 import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { ProductType } from "@/types/product.t";
-import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const productColumn: ColumnDef<ProductType>[] = [
-  {
-    accessorKey: "_id",
-    header: "ID",
-    cell: ({ row }) => {
-      return <p># {getLastSixDigit(row.original._id)}</p>;
-    },
-  },
   {
     accessorKey: "name",
     header: "NAME",

@@ -1,86 +1,53 @@
 "use client";
+import sellerRefresh from "@/actions/seller-refresh";
 import { DataTable } from "@/components/native/DataTable";
-import FetchErrorMessage from "@/components/native/FetchErrorMessage";
-import SixSkeleton from "@/components/native/SixSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useStatus from "@/hooks/useStatus";
-import { fetcher } from "@/https/get-request";
-import updateRequest from "@/https/update-request";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { RefreshCwIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
+import React, { useTransition } from "react";
+import { toast } from "sonner";
 import { useDebouncedCallback } from "use-debounce";
 
 interface TableUIWrapperProps<T> {
-  auth?: string;
-  route: string;
   columns: ColumnDef<T, unknown>[];
+  confirm?: string;
+  status?: string;
+  search?: string;
+  limit?: string;
+  data: any;
+  page: string;
 }
 
 export default function SellerOrderUIWrapper<
   T extends { status?: string; confirm?: boolean },
->({ auth, route, columns }: TableUIWrapperProps<T>) {
-  const [temp, setTemp] = useState<string>();
+>({ columns, data, status, search, limit, page }: TableUIWrapperProps<T>) {
   const { replace } = useRouter();
+  const [isMutating, startTransition] = useTransition();
   const pathname = usePathname();
-  const { showStatus } = useStatus();
-
-  // using search params
   const searchParams = useSearchParams();
-  const index = searchParams.get("index") ?? "1";
-  const limit = searchParams.get("limit") ?? "25";
-  const search = searchParams.get("search");
-  const status = searchParams.get("status");
-  const confirm = searchParams.get("confirm");
-  const filterBy = searchParams.get("filterBy") ?? "default";
-
-  // data fetching
-  const { data, error, isLoading } = useSWR<T[]>(
-    `${route}?auth=${auth}&page=${index}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
-    fetcher,
-    {
-      refreshInterval: 5000,
-      revalidateOnFocus: true,
-    },
-  );
-
-  // refresh all data
-  const { trigger, isMutating } = useSWRMutation(
-    `${route}/refresh?auth=${auth}`,
-    updateRequest,
-  );
 
   // handle search with 300 ms delay count
-  const handleSearch = useDebouncedCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const params = new URLSearchParams(searchParams);
-      params.set("index", "1");
+  const handleSearch = useDebouncedCallback((search: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", "1");
 
-      if (temp && temp !== "") {
-        params.set("filterBy", "search");
-        params.set("search", temp.trim() as string);
-      } else {
-        params.delete("search");
-        params.set("filterBy", "default");
-      }
-      replace(`${pathname}?${params.toString()}`);
-    },
-    300,
-  );
-
-  if (error) {
-    return <FetchErrorMessage error={error} />;
-  }
+    if (search && search !== "") {
+      params.set("filterBy", "search");
+      params.set("search", search.trim() as string);
+    } else {
+      params.delete("search");
+      params.set("filterBy", "default");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
 
   const handleStatus = (status: string) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("index", "1");
+    params.set("page", "1");
     params.set("filterBy", "status");
     params.set("status", status as string);
 
@@ -94,16 +61,23 @@ export default function SellerOrderUIWrapper<
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const handlePagination = (index: number) => {
+  const handlePagination = (page: number) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("index", index.toString());
+    params.set("page", page.toString());
     replace(`${pathname}?${params.toString()}`);
   };
 
   const refreshDataInfo = async () => {
-    const res = await trigger({});
-    showStatus("/order", "Data refreshed successfully", res);
+    startTransition(async () => {
+      const res = await sellerRefresh();
+
+      if (res) {
+        toast.success("Refresh successful");
+      } else {
+        toast.error("Refresh failed");
+      }
+    });
   };
 
   return (
@@ -113,8 +87,7 @@ export default function SellerOrderUIWrapper<
           className="w-fit"
           placeholder="filter item.."
           autoFocus
-          onChange={(e) => setTemp(e.target.value)}
-          onKeyDown={(e) => handleSearch(e)}
+          onChange={(e) => handleSearch(e.target.value)}
           defaultValue={search as string}
         />
 
@@ -154,55 +127,46 @@ export default function SellerOrderUIWrapper<
       </div>
 
       <div className="h-screen">
-        {data ? (
-          <>
-            <DataTable columns={columns} data={data} />
-            <div className="mt-8 flex items-center justify-between">
-              <div className="flex gap-2">
-                <select
-                  onChange={(e) => handleLimit(e.target.value)}
-                  className="mt-0.5 rounded-md bg-gray-100 p-2"
-                  defaultValue={limit}
-                >
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="35">35</option>
-                  <option value="50">50</option>
-                </select>
-              </div>
+        <DataTable columns={columns} data={data} />
+        <div className="mt-8 flex items-center justify-between">
+          <div className="flex gap-2">
+            <select
+              onChange={(e) => handleLimit(e.target.value)}
+              className="mt-0.5 rounded-md bg-gray-100 p-2"
+              defaultValue={limit}
+            >
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
 
-              <div className="mb-4 flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    let i = parseInt(index);
+          <div className="mb-4 flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                let i = parseInt(page);
 
-                    if (i === 1) {
-                      return;
-                    }
+                if (i === 1) {
+                  return;
+                }
 
-                    handlePagination(--i);
-                  }}
-                >
-                  Prev
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    let i = parseInt(index);
-                    handlePagination(++i);
-                  }}
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
-          </>
-        ) : isLoading ? (
-          <SixSkeleton />
-        ) : (
-          <DataTable columns={columns} data={[]} />
-        )}
+                handlePagination(--i);
+              }}
+            >
+              Prev
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                let i = parseInt(page);
+                handlePagination(++i);
+              }}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
