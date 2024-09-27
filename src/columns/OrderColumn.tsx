@@ -28,10 +28,10 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "duplicate",
-    header: "Duplicate",
+    header: "DUP",
     cell: ({ row }) => {
       return (
-        <p className="font-bold text-red-700">
+        <p className="font-bold text-red-900">
           {row.original.duplicate && "YES"}
         </p>
       );
@@ -53,7 +53,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "orderBy",
-    header: "ORDER BY",
+    header: "SELLER",
     cell: ({ row }) => {
       return (
         <Link
@@ -67,7 +67,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "NAME",
     cell: ({ row }) => {
       return (
         <MultipleHoverToolkit
@@ -186,7 +186,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}
             data={row.original}
           >
-            <Send size={18} />
+            <Send size={18} className="cursor-pointer" />
           </OrderConfirmationDialog>
         )}
         <HoverToolkit text="Invoice">
@@ -197,7 +197,6 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         <DeleteItem
           queryUrl={`/order/delete/${row.original._id}`}
           validationTag={TAGS.ORDERS}
-          successMessage="Order deleted successfully"
         />
       </div>
     ),

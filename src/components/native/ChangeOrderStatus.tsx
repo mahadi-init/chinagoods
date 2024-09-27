@@ -1,9 +1,10 @@
+"use client";
 import { Button } from "../ui/button";
 import ConfirmationDialog from "./ConfirmationDialog";
-import useSWRMutation from "swr/mutation";
-import updateRequest from "@/https/update-request";
-import useStatus from "@/hooks/useStatus";
-import clsx from "clsx";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import updateAction from "@/actions/update-action";
+import { TAGS } from "@/types/tags";
 
 export default function ChangeOrderStatus({
   id,
@@ -14,11 +15,7 @@ export default function ChangeOrderStatus({
   status?: string;
   color?: string;
 }) {
-  const { trigger, isMutating } = useSWRMutation(
-    `/order/change-order-status/${id}`,
-    updateRequest,
-  );
-  const { showStatus } = useStatus();
+  const [isMutating, startTransition] = useTransition();
 
   return (
     <ConfirmationDialog
@@ -37,8 +34,19 @@ export default function ChangeOrderStatus({
             updateValue = status as string;
         }
 
-        const res = await trigger({ status: updateValue });
-        showStatus("/order", "Successfully updated", res);
+        startTransition(async () => {
+          const res = await updateAction(
+            `/order/change-order-status/${id}`,
+            { status: updateValue },
+            [TAGS.ORDERS],
+          );
+
+          if (res) {
+            toast.success("Operation success");
+          } else {
+            toast.error("Operation failed");
+          }
+        });
       }}
     >
       <Button variant={"outline"} className="font-bold">

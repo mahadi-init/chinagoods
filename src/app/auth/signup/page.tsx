@@ -1,14 +1,13 @@
 "use client";
 import SubmitButton from "@/components/native/SubmitButton";
 import { Input } from "@/components/ui/input";
-import useStatus from "@/hooks/useStatus";
-import addRequest from "@/https/add-request";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import useSWRMutation from "swr/mutation";
 import { z } from "zod";
+import SignupAction from "./signup-action";
+import { useRouter } from "next/navigation";
 
 const ADMINCODE = "624234";
 
@@ -26,32 +25,29 @@ export default function Signup() {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<SellerType>({
     resolver: zodResolver(SellerSchema),
   });
-
-  const { trigger, isMutating } = useSWRMutation(
-    "/auth/seller/signup",
-    addRequest,
-  );
-
-  const { showStatus } = useStatus();
   const router = useRouter();
+  const [isMutating, startTransition] = useTransition();
 
   const onSubmit: SubmitHandler<SellerType> = async (data) => {
     if (data.adminCode !== ADMINCODE) {
       toast.error("Incorrect admin code !!");
     }
 
-    const res = await trigger(data);
+    startTransition(async () => {
+      const res = await SignupAction(data);
 
-    if (!res.success) {
-      toast.error(res.message);
-      return;
-    }
-
-    showStatus("/auth", "Signup successful", res);
-    router.replace("/auth/signin");
+      if (res) {
+        toast.error("Signup successful");
+        router.replace("/auth/signin");
+      } else {
+        toast.error("Signup failed");
+        reset();
+      }
+    });
   };
 
   return (

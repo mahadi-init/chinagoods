@@ -10,7 +10,6 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 interface PropTypes {
   queryUrl: string;
   validationTag: string;
-  successMessage: string;
 }
 
 export default function DeleteItem(props: PropTypes): JSX.Element {
@@ -18,7 +17,7 @@ export default function DeleteItem(props: PropTypes): JSX.Element {
 
   const handleFormAction = async () => {
     startTransition(async () => {
-      const res = await deleteAction(props.queryUrl, props.validationTag);
+      const res = await deleteAction(props.queryUrl, [props.validationTag]);
 
       if (res) {
         toast.success("Successfully deleted");

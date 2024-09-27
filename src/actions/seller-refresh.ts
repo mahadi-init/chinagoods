@@ -10,7 +10,6 @@ export default async function sellerRefresh() {
     `/seller/orders/refresh?auth=${auth}`,
     {},
   );
-
   revalidateTag(TAGS.ORDERS);
   return res;
 }

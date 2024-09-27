@@ -6,8 +6,6 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
-import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
 import { PackageIcon } from "lucide-react";
 import { OrderType } from "@/types/order.t";
 import Link from "next/link";

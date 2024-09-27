@@ -1,5 +1,5 @@
 "use client";
-import { sendOrder } from "@/actions/action";
+import postAction from "@/actions/post-action";
 import SubmitButton from "@/components/native/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { OrderSchema, OrderType } from "@/types/order.t";
 import { ProductType } from "@/types/product.t";
+import { TAGS } from "@/types/tags";
 import {
   convertBengaliToEnglish,
   convertBengaliToEnglishNumber,
@@ -118,7 +119,10 @@ export default function MakeOrder({
     };
 
     startTransition(async () => {
-      const res = await sendOrder(order);
+      const res = await postAction(`/order/add`, order, [
+        TAGS.ORDERS,
+        TAGS.DASHBOARD,
+      ]);
 
       if (res) {
         toast.success("Order send successfully");

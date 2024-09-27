@@ -20,7 +20,7 @@ export default async function Orders() {
       <DashboardOverview data={dashboard} />
 
       <div className="mt-16">
-        <p className="text-center text-2xl font-bold">Mini Order (ON ONLY)</p>
+        <p className="text-center text-2xl font-bold">Mini Order (NO ONLY)</p>
         <OrderUIWrapper
           showTop={false}
           route="/order"

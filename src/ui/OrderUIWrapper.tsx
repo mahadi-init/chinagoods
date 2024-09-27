@@ -1,15 +1,15 @@
 "use client";
+import updateAction from "@/actions/update-action";
 import { DataTable } from "@/components/native/DataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useStatus from "@/hooks/useStatus";
-import updateRequest from "@/https/update-request";
+import { TAGS } from "@/types/tags";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { RefreshCwIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
-import useSWRMutation from "swr/mutation";
+import React, { useTransition } from "react";
+import { toast } from "sonner";
 import { useDebouncedCallback } from "use-debounce";
 
 interface TableUIWrapperProps<T> {
@@ -41,13 +41,8 @@ export default function OrderUIWrapper<
 }: TableUIWrapperProps<T>) {
   const { replace } = useRouter();
   const pathname = usePathname();
-  const { showStatus } = useStatus();
   const searchParams = useSearchParams();
-
-  const { trigger, isMutating } = useSWRMutation(
-    `${route}/refresh`,
-    updateRequest,
-  );
+  const [isMutating, startTransition] = useTransition();
 
   const handleSearch = useDebouncedCallback((search) => {
     const params = new URLSearchParams(searchParams);
@@ -98,8 +93,15 @@ export default function OrderUIWrapper<
   };
 
   const refreshDataInfo = async () => {
-    const res = await trigger({});
-    showStatus("/order", "Data refreshed successfully", res);
+    startTransition(async () => {
+      const res = await updateAction(`${route}/refresh`, {}, [TAGS.ORDERS]);
+
+      if (res) {
+        toast.success("Order refresh");
+      } else {
+        toast.error("Refresh failed");
+      }
+    });
   };
 
   return (

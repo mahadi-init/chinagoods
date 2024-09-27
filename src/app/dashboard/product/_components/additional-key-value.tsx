@@ -1,17 +1,9 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ProductSchema } from "@/types/product.t";
 import clsx from "clsx";
 import { Trash2 } from "lucide-react";
-import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { z } from "zod";
-
-const additionalKeyValueSchema = ProductSchema.pick({
-  additionalInformation: true,
-});
-type AdditionalKeyValueType = z.infer<typeof additionalKeyValueSchema>;
 
 export default function AdditionalKeyValue() {
   const { register } = useFormContext();

@@ -1,7 +1,7 @@
-import useStatus from "@/hooks/useStatus";
-import updateRequest from "@/https/update-request";
-import useSWRMutation from "swr/mutation";
 import { Badge } from "../ui/badge";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import updateAction from "@/actions/update-action";
 
 export default function StatusIndicator({
   status,
@@ -16,21 +16,26 @@ export default function StatusIndicator({
   variant?: "default" | "destructive" | "outline" | "secondary";
   text?: string;
 }): JSX.Element {
-  const { showStatus } = useStatus();
-  const { trigger, isMutating } = useSWRMutation(
-    updateStatusUrl,
-    updateRequest
-  );
+  const [isMutating, startTransition] = useTransition();
 
   const handleOnClick = async () => {
-    const res = await trigger({ status: !status });
-    showStatus(mutationTag as string, "Status updated successfully", res);
+    startTransition(async () => {
+      const res = await updateAction(updateStatusUrl, { status: !status }, [
+        mutationTag,
+      ]);
+
+      if (res) {
+        toast.success("Update successful");
+      } else {
+        toast.error("Update failed");
+      }
+    });
   };
 
   return (
     <Badge
       variant={!variant ? (status ? "default" : "destructive") : "outline"}
-      className="text-xs font-semibold cursor-pointer"
+      className="cursor-pointer text-xs font-semibold"
       onClick={handleOnClick}
     >
       {!isMutating && !text ? (status ? "ACTIVE" : "INACTIVE") : text}

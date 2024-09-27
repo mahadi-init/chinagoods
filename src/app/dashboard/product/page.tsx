@@ -1,6 +1,7 @@
 import { productColumn } from "@/columns/ProductColumn";
 import PageTop from "@/components/native/PageTop";
 import { Request } from "@/https/request";
+import { TAGS } from "@/types/tags";
 import ProductUiWrapper from "@/ui/ProductUIWrapper";
 
 export default async function Products({
@@ -20,6 +21,7 @@ export default async function Products({
 
   const products = await new Request().get(
     `/product/page?page=${page}&limit=${limit}&search=${search}`,
+    [TAGS.PRODUCTS],
   );
 
   return (

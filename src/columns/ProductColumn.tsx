@@ -2,6 +2,7 @@
 import DeleteItem from "@/components/native/DeleteItem";
 import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { ProductType } from "@/types/product.t";
+import { TAGS } from "@/types/tags";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const productColumn: ColumnDef<ProductType>[] = [
@@ -41,8 +42,7 @@ export const productColumn: ColumnDef<ProductType>[] = [
       <div className="flex items-center gap-8">
         <DeleteItem
           queryUrl={`/product/delete/${row.original._id}`}
-          validationTag="/product"
-          successMessage="Product deleted successfully"
+          validationTag={TAGS.PRODUCTS}
         />
       </div>
     ),
