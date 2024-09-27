@@ -1,3 +1,4 @@
+import postAction from "@/actions/post-action";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,12 +10,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import useStatus from "@/hooks/useStatus";
-import addRequest from "@/https/add-request";
 import { OrderType } from "@/types/order.t";
-import React, { useEffect } from "react";
+import { TAGS } from "@/types/tags";
+import React, { useEffect, useTransition } from "react";
 import { toast } from "sonner";
-import useSWRMutation from "swr/mutation";
 
 export default function OrderConfirmationDialog({
   alertText,
@@ -25,11 +24,7 @@ export default function OrderConfirmationDialog({
   children: React.ReactNode;
   data: OrderType;
 }): React.ReactElement {
-  const { trigger, isMutating } = useSWRMutation(
-    "/order/send-order",
-    addRequest,
-  );
-  const { showStatus } = useStatus();
+  const [isMutating, startTransition] = useTransition();
 
   useEffect(() => {
     if (isMutating) {
@@ -40,8 +35,15 @@ export default function OrderConfirmationDialog({
   }, [isMutating]);
 
   const handleSubmit = async () => {
-    const res = await trigger(data);
-    showStatus("/order", "Order send successully", res);
+    startTransition(async () => {
+      const res = await postAction("/order/send-order", data, [TAGS.ORDERS]);
+
+      if (res) {
+        toast.success("Order send successfully");
+      } else {
+        toast.error("Order send failed");
+      }
+    });
   };
 
   return (

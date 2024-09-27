@@ -10,8 +10,8 @@ import { PenIcon, ReceiptText, Send } from "lucide-react";
 import Link from "next/link";
 import ChangeOrderStatus from "@/components/native/ChangeOrderStatus";
 import { MultipleHoverToolkit } from "@/components/native/MutipleHoverToolkit";
-import { getFormattedDate } from "@/utils/get-formatted-date";
 import PhoneSearch from "@/components/phone-search";
+import { TAGS } from "@/types/tags";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
@@ -28,36 +28,15 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "duplicate",
-    header: "Duplicate",
+    header: "DUP",
     cell: ({ row }) => {
       return (
-        <p className="font-bold text-red-700">
+        <p className="font-bold text-red-900">
           {row.original.duplicate && "YES"}
         </p>
       );
     },
   },
-  // {
-  //   accessorKey: "note",
-  //   header: "NOTE",
-  //   cell: ({ row }) => {
-  //     return <p>{row.original.note?.slice(0, 15)}...</p>;
-  //   },
-  // },
-  // {
-  //   accessorKey: "invoice",
-  //   header: "INVOICE",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <Link
-  //         href={`/dashboard/order/details/${row.original._id}`}
-  //         className="cursor-pointer font-medium underline"
-  //       >
-  //         # {getLastSixDigit(row.original._id)}
-  //       </Link>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "sku",
     header: "SKU",
@@ -74,7 +53,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "orderBy",
-    header: "ORDER BY",
+    header: "SELLER",
     cell: ({ row }) => {
       return (
         <Link
@@ -88,7 +67,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "NAME",
     cell: ({ row }) => {
       return (
         <MultipleHoverToolkit
@@ -207,7 +186,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
             alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}
             data={row.original}
           >
-            <Send size={18} />
+            <Send size={18} className="cursor-pointer" />
           </OrderConfirmationDialog>
         )}
         <HoverToolkit text="Invoice">
@@ -217,8 +196,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
         </HoverToolkit>
         <DeleteItem
           queryUrl={`/order/delete/${row.original._id}`}
-          validationTag="/order"
-          successMessage="Order deleted successfully"
+          validationTag={TAGS.ORDERS}
         />
       </div>
     ),

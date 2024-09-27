@@ -1,0 +1,6 @@
+export const TAGS = {
+  ORDERS: "ORDERS",
+  DASHBOARD: "DASHBOARD",
+  PRODUCTS: "PRODUCTS",
+  SELLERS: "SELLERS",
+};

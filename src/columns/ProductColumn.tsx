@@ -2,17 +2,10 @@
 import DeleteItem from "@/components/native/DeleteItem";
 import { ImagepopOver } from "@/components/native/ImagePopOver";
 import { ProductType } from "@/types/product.t";
-import { getLastSixDigit } from "@/utils/get-last-six-digit";
+import { TAGS } from "@/types/tags";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const productColumn: ColumnDef<ProductType>[] = [
-  {
-    accessorKey: "_id",
-    header: "ID",
-    cell: ({ row }) => {
-      return <p># {getLastSixDigit(row.original._id)}</p>;
-    },
-  },
   {
     accessorKey: "name",
     header: "NAME",
@@ -49,8 +42,7 @@ export const productColumn: ColumnDef<ProductType>[] = [
       <div className="flex items-center gap-8">
         <DeleteItem
           queryUrl={`/product/delete/${row.original._id}`}
-          validationTag="/product"
-          successMessage="Product deleted successfully"
+          validationTag={TAGS.PRODUCTS}
         />
       </div>
     ),

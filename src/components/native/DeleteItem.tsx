@@ -1,40 +1,30 @@
 "use client";
-import deleteRequest from "@/https/delete-request";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
-import useSWRMutation from "swr/mutation";
 import { Button } from "../ui/button";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { useTransition } from "react";
+import deleteAction from "@/actions/delete-action";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface PropTypes {
   queryUrl: string;
   validationTag: string;
-  successMessage: string;
 }
 
 export default function DeleteItem(props: PropTypes): JSX.Element {
-  const { mutate } = useSWRConfig();
-  const { trigger, isMutating } = useSWRMutation(props.queryUrl, deleteRequest);
+  const [isMutating, startTransition] = useTransition();
 
   const handleFormAction = async () => {
-    if (isMutating) {
-      toast.loading("Deleting...");
-    }
+    startTransition(async () => {
+      const res = await deleteAction(props.queryUrl, [props.validationTag]);
 
-    const res = await trigger();
-
-    if (res.success === true) {
-      mutate(
-        (key) => typeof key === "string" && key.startsWith(props.validationTag),
-        undefined,
-        { revalidate: true },
-      );
-
-      toast.success(props.successMessage);
-    } else {
-      toast.error(res?.message);
-    }
+      if (res) {
+        toast.success("Successfully deleted");
+      } else {
+        toast.error("Delete failed");
+      }
+    });
   };
 
   return (
@@ -45,10 +35,15 @@ export default function DeleteItem(props: PropTypes): JSX.Element {
       <Button
         type="button"
         size="icon"
-        className="w-6 h-6"
+        className="h-6 w-6"
         variant="destructive"
+        disabled={isMutating}
       >
-        <Trash2 size={16} />
+        {isMutating ? (
+          <ReloadIcon className="w-4 animate-spin" />
+        ) : (
+          <Trash2 size={16} />
+        )}
       </Button>
     </ConfirmationDialog>
   );

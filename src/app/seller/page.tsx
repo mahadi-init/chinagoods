@@ -1,5 +1,3 @@
-"use client";
-
 import PageTop from "@/components/native/PageTop";
 import {
   Card,
@@ -7,34 +5,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { fetcher } from "@/https/get-request";
-import { SellerDashboard } from "@/types/seller-dashboard";
+import { Request } from "@/https/request";
+import { TAGS } from "@/types/tags";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
+import { cookies } from "next/headers";
 import React from "react";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
 
-export default function Dashboard() {
-  const [auth, setAuth] = useState<string>();
-  const [authName, setAuthName] = useState<string>();
+export default async function Dashboard() {
+  const auth = cookies().get("authId")?.value;
+  const authName = cookies().get("authName")?.value;
 
-  useEffect(() => {
-    setAuth(localStorage.getItem("authId") as string);
-    setAuthName(localStorage.getItem("authName") as string);
-  }, []);
-
-  const { data } = useSWR<SellerDashboard>(
-    auth && `/seller/orders/dashboard/${auth}`,
-    fetcher,
-    {
-      refreshInterval: 5000,
-    },
-  );
+  const data = await new Request().get(`/seller/orders/dashboard/${auth}`, [
+    TAGS.DASHBOARD,
+  ]);
 
   return (
     <div>
       <PageTop
-        title={`Profile : ${authName} - #${getLastSixDigit(auth)}`}
+        title={`${authName} - #${getLastSixDigit(auth)}`}
         showSubTitle={false}
       />
       <div className="my-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

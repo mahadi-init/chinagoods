@@ -3,24 +3,22 @@ import { Breadcrumbs } from "@/components/native/Breadcrumbs";
 import ButtonGroup from "@/components/native/ButtonGroup";
 import { ImageUploader } from "@/components/native/ImageUploader";
 import PageTop from "@/components/native/PageTop";
-import useStatus from "@/hooks/useStatus";
-import addRequest from "@/https/add-request";
 import { ProductType } from "@/types/product.t";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import useSWRMutation from "swr/mutation";
 import GeneralInformation from "../_components/general-information";
 import AdditionalKeyValue from "../_components/additional-key-value";
 import { useRouter } from "next/navigation";
+import postAction from "@/actions/post-action";
+import { TAGS } from "@/types/tags";
 
 export default function AddProduct() {
   const methods = useForm();
   const [imgUrl, setImgUrl] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
-  const { trigger, isMutating } = useSWRMutation("/product/add", addRequest);
-  const { showStatus } = useStatus();
   const router = useRouter();
+  const [isMutating, startTransition] = useTransition();
 
   const onSubmit = async (formData: ProductType) => {
     if (!imgUrl) {
@@ -37,12 +35,16 @@ export default function AddProduct() {
       img: imgUrl,
     };
 
-    const res = await trigger(data);
-    showStatus("/product", "Product added sucessfully", res);
+    startTransition(async () => {
+      const res = await postAction(`/product/add`, data, [TAGS.PRODUCTS]);
 
-    if (res.success) {
-      router.push("/dashboard/product");
-    }
+      if (res) {
+        toast.success("Product successfully added");
+        router.push("/dashboard/product");
+      } else {
+        toast.error("Failed adding product");
+      }
+    });
   };
 
   return (

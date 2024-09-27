@@ -1,121 +1,57 @@
-"use client";
-
 import { sellerOrderColumn } from "@/columns/SellerOrderColumn";
-import PageTop from "@/components/native/PageTop";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { fetcher } from "@/https/get-request";
-import { SellerDashboard } from "@/types/seller-dashboard";
+import SellerDashboardPage from "@/components/native/SellerDashboard";
+import { Request } from "@/https/request";
+import { TAGS } from "@/types/tags";
 import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
-import { useSearchParams } from "next/navigation";
-import useSWR from "swr";
 
-export default function SellerById() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
+export default async function SellerById({
+  searchParams,
+}: {
+  searchParams: {
+    id: string;
+    name: string;
+    page: string;
+    limit: string;
+    search: string;
+    status: string;
+    confirm: string;
+    filterBy: string;
+  };
+}) {
+  const auth = searchParams.id;
+  const name = searchParams.name;
 
-  const { data } = useSWR<SellerDashboard>(
-    id && `/seller/orders/dashboard/${id}`,
-    fetcher,
+  const req = new Request();
+  const dashboard = await req.get(`/seller/orders/dashboard/${auth}`);
+
+  const payload = {
+    page: searchParams.page ?? "1",
+    limit: searchParams.limit ?? "50",
+    search: searchParams.search,
+    status: searchParams.status,
+    confirm: searchParams.confirm,
+    filterBy: searchParams.filterBy ?? "default",
+  };
+
+  const { page, limit, filterBy, search, status, confirm } = payload;
+
+  const orders = await req.get(
+    `/seller/orders?auth=${auth}&page=${page}&limit=${limit}&filterBy=${filterBy}&search=${search}&status=${status}&confirm=${confirm}`,
+    [TAGS.ORDERS],
   );
 
   return (
     <div>
       <div className="mt-1 flex flex-col gap-1 font-medium">
         <p>Name : {name}</p>
-        <p>ID : {id}</p>
+        <p>ID : {auth}</p>
       </div>
-      <div className="my-8 grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        <Card className="w-[350px] bg-sky-700 text-white">
-          <CardHeader>
-            <CardTitle>Total Orders</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.totalOrders} {data?.totalOrders === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-yellow-700 text-white">
-          <CardHeader>
-            <CardTitle>Total Pending</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.totalPending}{" "}
-              {data?.totalPending === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-red-700 text-white">
-          <CardHeader>
-            <CardTitle>Total cancelled</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.totalCancelled}{" "}
-              {data?.totalCancelled === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-green-700 text-white">
-          <CardHeader>
-            <CardTitle>Total Delivered</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.totalDelivered}{" "}
-              {data?.totalDelivered === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-sky-700 text-white">
-          <CardHeader>
-            <CardTitle>Monthly Total</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.thisMonthTotal}{" "}
-              {data?.thisMonthTotal === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-yellow-700 text-white">
-          <CardHeader>
-            <CardTitle>Monthly Pending</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.thisMonthPending}{" "}
-              {data?.thisMonthPending === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-red-700 text-white">
-          <CardHeader>
-            <CardTitle>Monthly Cancelled</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.thisMonthCancelled}{" "}
-              {data?.thisMonthCancelled === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="w-[350px] bg-green-700 text-white">
-          <CardHeader>
-            <CardTitle>Monthly Delivered</CardTitle>
-            <CardDescription className="font-semibold text-white">
-              {data?.thisMonthDelivered}{" "}
-              {data?.thisMonthDelivered === 1 ? "Order" : "Orders"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-
-      {id && (
+      <SellerDashboardPage data={dashboard} />
+      {auth && (
         <SellerOrderUIWrapper
-          auth={id}
-          route={`/seller/orders`}
           columns={sellerOrderColumn as any}
+          data={orders}
+          page={page}
         />
       )}
     </div>

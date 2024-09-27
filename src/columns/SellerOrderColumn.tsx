@@ -20,12 +20,23 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
     },
   },
   {
+    accessorKey: "duplicate",
+    header: "DUP",
+    cell: ({ row }) => {
+      return (
+        <p className="font-bold text-red-700">
+          {row.original.duplicate && "YES"}
+        </p>
+      );
+    },
+  },
+  {
     accessorKey: "name",
-    header: "Name",
+    header: "NAME",
   },
   {
     accessorKey: "phone",
-    header: "CUSTOMER PHONE",
+    header: "PHONE",
   },
   {
     accessorKey: "total",
