@@ -1,7 +1,10 @@
+import updateAction from "@/actions/update-action";
 import { Button } from "../ui/button";
 import ConfirmationDialog from "./ConfirmationDialog";
 import clsx from "clsx";
 import { useTransition } from "react";
+import { TAGS } from "@/types/tags";
+import { toast } from "sonner";
 
 export default function ChangeConfirmationStatus({
   id,
@@ -10,11 +13,6 @@ export default function ChangeConfirmationStatus({
   id?: string;
   confirm?: string;
 }) {
-  // const { trigger, isMutating } = useSWRMutation(
-  //   `/order/change-confirm-status/${id}`,
-  //   updateRequest,
-  // );
-  // const { showStatus } = useStatus();
   const [isMutating, startTransition] = useTransition();
 
   return (
@@ -34,10 +32,21 @@ export default function ChangeConfirmationStatus({
             updateValue = "NO";
         }
 
-        startTransition(async () => {});
+        startTransition(async () => {
+          const res = await updateAction(
+            `/order/change-confirm-status/${id}`,
+            {
+              confirm: updateValue,
+            },
+            [TAGS.ORDERS],
+          );
 
-        // const res = await trigger({ confirm: updateValue });
-        // showStatus("/order", "Successfully updated", res);
+          if (res) {
+            toast.success("Status updated successfully");
+          } else {
+            toast.error("Update failed");
+          }
+        });
       }}
     >
       <Button variant={"outline"} className="font-bold">
