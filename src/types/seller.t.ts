@@ -8,6 +8,10 @@ export const SellerSchema = z
     password: z.string().min(6, "Password must be at least 6 characters"),
     phone: z.string().min(11, "Phone number must be 11 characters"),
     orders: z.array(OrderSchema),
+    lastPaymentDate: z.string().datetime(),
+    lastPaymentAmount: z.string().min(1, "can't be empty"),
+    monthlyDeliveredAtThatPoint: z.string(),
+    note: z.string(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })

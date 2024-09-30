@@ -1,5 +1,9 @@
 // Function to calculate the difference in days
-export function getDaysAgo(dateString: string) {
+export function getDaysAgo(dateString?: string) {
+  if (!dateString) {
+    return;
+  }
+
   const givenDate = new Date(dateString);
   const currentDate = new Date();
 

@@ -40,20 +40,28 @@ export class Request {
       });
 
       const result = await res.json();
+      if (!result.success) {
+        throw new Error();
+      }
       return result;
     } catch (err) {
-      return null;
+      return false;
     }
   }
   async del(url: string) {
     try {
-      await fetch(`${site.BACKEND_URL}${url}`, {
+      const res = await fetch(`${site.BACKEND_URL}${url}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.token}`,
         },
       });
+
+      const result = await res.json();
+      if (!result.success) {
+        throw new Error();
+      }
 
       return true;
     } catch (err) {
@@ -76,7 +84,10 @@ export class Request {
         },
       });
 
-      const data = await res.json();
+      const result = await res.json();
+      if (!result.success) {
+        throw new Error();
+      }
       return data;
     } catch (err) {
       return false;
