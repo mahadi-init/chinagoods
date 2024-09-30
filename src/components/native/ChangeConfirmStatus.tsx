@@ -1,10 +1,10 @@
 import updateAction from "@/actions/update-action";
 import { Button } from "../ui/button";
-import ConfirmationDialog from "./ConfirmationDialog";
 import clsx from "clsx";
 import { useTransition } from "react";
 import { TAGS } from "@/types/tags";
 import { toast } from "sonner";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function ChangeConfirmationStatus({
   id,
@@ -16,9 +16,10 @@ export default function ChangeConfirmationStatus({
   const [isMutating, startTransition] = useTransition();
 
   return (
-    <ConfirmationDialog
-      alertText="This action will change confirm status"
-      action={async () => {
+    <Button
+      variant={"outline"}
+      className="font-bold"
+      onClick={async () => {
         let updateValue: string;
 
         switch (confirm) {
@@ -49,23 +50,21 @@ export default function ChangeConfirmationStatus({
         });
       }}
     >
-      <Button variant={"outline"} className="font-bold">
-        {isMutating ? (
-          "Loading.."
-        ) : (
-          <p
-            className={clsx(
-              confirm === "OK"
-                ? "text-green-700"
-                : confirm === "NO"
-                  ? "text-red-700"
-                  : "text-yellow-600",
-            )}
-          >
-            {confirm}
-          </p>
-        )}
-      </Button>
-    </ConfirmationDialog>
+      {isMutating ? (
+        <ReloadIcon className="w-4 animate-spin" />
+      ) : (
+        <p
+          className={clsx(
+            confirm === "OK"
+              ? "text-green-700"
+              : confirm === "NO"
+                ? "text-red-700"
+                : "text-yellow-600",
+          )}
+        >
+          {confirm}
+        </p>
+      )}
+    </Button>
   );
 }
