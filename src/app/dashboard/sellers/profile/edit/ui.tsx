@@ -57,12 +57,7 @@ export default function EditSellerPayment({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-center text-2xl font-bold underline">Seller Data</p>
-      <div className="flex flex-col gap-2">
-        <p className="font-semibold text-green-600">Name : {data.name}</p>
-        <p className="font-semibold text-purple-500">Phone : {data.phone}</p>
-      </div>
-
+      <p className="text-center text-2xl font-bold">Payment info</p>
       <form onSubmit={handleSubmit(submitHandler)} className="mt-6">
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="flex flex-col gap-4">

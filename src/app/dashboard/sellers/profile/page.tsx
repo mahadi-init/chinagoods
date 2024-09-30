@@ -42,10 +42,6 @@ export default async function SellerById({
 
   return (
     <div>
-      <div className="mt-1 flex flex-col gap-1 font-medium">
-        <p>Name : {name}</p>
-        <p>ID : {auth}</p>
-      </div>
       <SellerDashboardPage data={dashboard} />
       {auth && (
         <SellerOrderUIWrapper

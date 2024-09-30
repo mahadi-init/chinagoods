@@ -3,17 +3,17 @@ import EditSellerPayment from "./ui";
 import { TAGS } from "@/types/tags";
 
 export default async function SellerEditPage({
-  params,
+  searchParams,
 }: {
-  params: { id: string };
+  searchParams: { id: string; name: string };
 }) {
-  const data = await new Request().get(`/seller/details/${params.id}`, [
+  const data = await new Request().get(`/seller/details/${searchParams.id}`, [
     TAGS.SELLERS,
   ]);
 
   return (
     <div>
-      <EditSellerPayment data={data} id={params.id} />
+      <EditSellerPayment data={data} id={searchParams.id} />
     </div>
   );
 }

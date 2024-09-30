@@ -20,7 +20,6 @@ import {
   convertBengaliToEnglishNumber,
 } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import {
   useFieldArray,
@@ -30,10 +29,15 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function MakeOrder({ products }: { products: ProductType[] }) {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
+export default function MakeOrder({
+  products,
+  id,
+  name,
+}: {
+  products: ProductType[];
+  id: string;
+  name: string;
+}) {
   const [isMutating, startTransition] = useTransition();
   const {
     control,
@@ -134,13 +138,7 @@ export default function MakeOrder({ products }: { products: ProductType[] }) {
 
   return (
     <div>
-      <div className="mt-1 flex flex-col gap-1 font-medium">
-        <p>Name : {name}</p>
-        <p>ID : {id}</p>
-      </div>
-      <p className="mt-2 text-center text-3xl font-bold text-gray-800">
-        Create new order
-      </p>
+      <p className="text-center text-2xl font-bold">Create order</p>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
