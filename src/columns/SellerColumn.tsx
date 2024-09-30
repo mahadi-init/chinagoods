@@ -72,7 +72,7 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
         </HoverToolkit>
         <HoverToolkit text="Payment">
           <Link
-            href={`/dashboard/sellers/profile/edit?id=${row.original._id}&name=${row.original.name}`}
+            href={`/dashboard/sellers/profile/payment?id=${row.original._id}&name=${row.original.name}`}
           >
             <PenIcon size={18} />
           </Link>

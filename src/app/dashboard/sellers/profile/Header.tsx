@@ -18,7 +18,9 @@ export default function Header() {
           <Link href={`/dashboard/sellers/profile/order?id=${id}&name=${name}`}>
             Order
           </Link>
-          <Link href={`/dashboard/sellers/profile/edit?id=${id}&name=${name}`}>
+          <Link
+            href={`/dashboard/sellers/profile/payment?id=${id}&name=${name}`}
+          >
             Payment
           </Link>
         </div>

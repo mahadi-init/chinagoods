@@ -19,6 +19,7 @@ import {
   convertBengaliToEnglishNumber,
 } from "@/utils/convert-bangla-english";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import {
   useFieldArray,
@@ -37,6 +38,7 @@ export default function MakeOrder({
   auth?: string;
   authName?: string;
 }) {
+  const { refresh } = useRouter();
   const [isMutating, startTransition] = useTransition();
   const {
     control,
@@ -127,6 +129,7 @@ export default function MakeOrder({
       if (res) {
         toast.success("Order send successfully");
         reset();
+        refresh();
       } else {
         toast.error("Order send failed");
       }

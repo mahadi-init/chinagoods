@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SellerSchema, SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -29,6 +29,10 @@ export default function EditSellerPayment({
     resolver: zodResolver(SellerSchema),
   });
   const [isMutating, startTransition] = useTransition();
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   const submitHandler = (data: SellerType) => {
     if (date && date > new Date()) {
@@ -64,7 +68,7 @@ export default function EditSellerPayment({
             <div className="w-[350px]">
               <Label>Payment amount</Label>
               <Input
-                placeholder="1200"
+                placeholder={data.lastPaymentAmount ?? "1200"}
                 type="number"
                 {...register("lastPaymentAmount", { required: true })}
               />
@@ -77,7 +81,7 @@ export default function EditSellerPayment({
             <div className="w-[350px]">
               <Label>Delivery at that Point</Label>
               <Input
-                placeholder="120"
+                placeholder={data.monthlyDeliveredAtThatPoint ?? "120"}
                 type="number"
                 {...register("monthlyDeliveredAtThatPoint")}
               />
@@ -101,8 +105,7 @@ export default function EditSellerPayment({
             <Label>Note</Label>
             <Textarea
               rows={20}
-              placeholder="Enter your note here"
-              defaultValue={data.note}
+              placeholder={data.note ?? "Enter your note here"}
               {...register("note")}
             />
           </div>
