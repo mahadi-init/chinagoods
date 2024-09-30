@@ -66,9 +66,12 @@ export default function EditSellerPayment({
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="flex flex-col gap-4">
             <div className="w-[350px]">
-              <Label>Payment amount</Label>
+              <Label>
+                Payment amount{" "}
+                {data.lastPaymentAmount && `(${data.lastPaymentAmount} TK)`}
+              </Label>
               <Input
-                placeholder={data.lastPaymentAmount ?? "1200"}
+                placeholder="1200"
                 type="number"
                 {...register("lastPaymentAmount", { required: true })}
               />
@@ -79,9 +82,13 @@ export default function EditSellerPayment({
               )}
             </div>
             <div className="w-[350px]">
-              <Label>Delivery at that Point</Label>
+              <Label>
+                Delivery at that Point{" "}
+                {data.monthlyDeliveredAtThatPoint &&
+                  `(${data.monthlyDeliveredAtThatPoint})`}
+              </Label>
               <Input
-                placeholder={data.monthlyDeliveredAtThatPoint ?? "120"}
+                placeholder="120"
                 type="number"
                 {...register("monthlyDeliveredAtThatPoint")}
               />
@@ -105,7 +112,8 @@ export default function EditSellerPayment({
             <Label>Note</Label>
             <Textarea
               rows={20}
-              placeholder={data.note ?? "Enter your note here"}
+              placeholder="Enter your note here"
+              defaultValue={data.note}
               {...register("note")}
             />
           </div>
