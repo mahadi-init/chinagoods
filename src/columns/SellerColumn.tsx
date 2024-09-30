@@ -63,11 +63,9 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex items-center gap-8">
-        <HoverToolkit text="Edit">
-          <Link href={`/dashboard/sellers/edit/${row.original._id}`}>
-            <PenIcon size={18} />
-          </Link>
-        </HoverToolkit>
+        <Link href={`/dashboard/sellers/edit/${row.original._id}`}>
+          <PenIcon size={18} />
+        </Link>
         <DeleteItem
           queryUrl={`/seller/delete/${row.original._id}`}
           validationTag={TAGS.SELLERS}
