@@ -11,5 +11,9 @@ export default async function SellerEditPage({
     TAGS.SELLERS,
   ]);
 
-  return <EditSellerPayment data={data} id={params.id} />;
+  return (
+    <div>
+      <EditSellerPayment data={data} id={params.id} />
+    </div>
+  );
 }
