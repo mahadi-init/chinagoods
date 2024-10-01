@@ -68,7 +68,7 @@ export default function EditSellerPayment({
             <div className="w-[350px]">
               <Label>
                 Payment amount{" "}
-                {data.lastPaymentAmount && `(${data.lastPaymentAmount} TK)`}
+                {data?.lastPaymentAmount && `(${data.lastPaymentAmount} TK)`}
               </Label>
               <Input
                 placeholder="1200"
@@ -84,7 +84,7 @@ export default function EditSellerPayment({
             <div className="w-[350px]">
               <Label>
                 Delivery at that Point{" "}
-                {data.monthlyDeliveredAtThatPoint &&
+                {data?.monthlyDeliveredAtThatPoint &&
                   `(${data.monthlyDeliveredAtThatPoint})`}
               </Label>
               <Input
@@ -113,7 +113,7 @@ export default function EditSellerPayment({
             <Textarea
               rows={20}
               placeholder="Enter your note here"
-              defaultValue={data.note}
+              defaultValue={data?.note}
               {...register("note")}
             />
           </div>
