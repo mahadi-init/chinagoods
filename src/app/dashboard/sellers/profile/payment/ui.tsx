@@ -5,15 +5,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { SellerSchema, SellerType } from "@/types/seller.t";
+import { PaymentSchema, PaymentType, SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function EditSellerPayment({
-  data,
   id,
 }: {
   data: SellerType;
@@ -25,16 +24,14 @@ export default function EditSellerPayment({
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm<SellerType>({
-    resolver: zodResolver(SellerSchema),
+  } = useForm<PaymentType>({
+    resolver: zodResolver(PaymentSchema),
   });
   const [isMutating, startTransition] = useTransition();
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  console.log(errors);
 
-  const submitHandler = (data: SellerType) => {
+  const submitHandler = (data: PaymentType) => {
     if (date && date > new Date()) {
       toast.error("Invalid date");
       return;
@@ -47,7 +44,7 @@ export default function EditSellerPayment({
           ...data,
           lastPaymentDate: date ?? new Date(),
         },
-        [TAGS.SELLERS],
+        [TAGS.HISTORY],
       );
 
       if (res) {
@@ -66,10 +63,7 @@ export default function EditSellerPayment({
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="flex flex-col gap-4">
             <div className="w-[350px]">
-              <Label>
-                Payment amount{" "}
-                {data?.lastPaymentAmount && `(${data.lastPaymentAmount} TK)`}
-              </Label>
+              <Label>Payment amount</Label>
               <Input
                 placeholder="1200"
                 type="number"
@@ -82,11 +76,7 @@ export default function EditSellerPayment({
               )}
             </div>
             <div className="w-[350px]">
-              <Label>
-                Delivery at that Point{" "}
-                {data?.monthlyDeliveredAtThatPoint &&
-                  `(${data.monthlyDeliveredAtThatPoint})`}
-              </Label>
+              <Label>Delivery at that Point</Label>
               <Input
                 placeholder="120"
                 type="number"
@@ -113,7 +103,6 @@ export default function EditSellerPayment({
             <Textarea
               rows={20}
               placeholder="Enter your note here"
-              defaultValue={data?.note}
               {...register("note")}
             />
           </div>

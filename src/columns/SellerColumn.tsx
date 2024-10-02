@@ -5,7 +5,7 @@ import { SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
 import { getDaysAgo } from "@/utils/get-days-ago";
 import { ColumnDef } from "@tanstack/react-table";
-import { PenIcon, ShoppingBag } from "lucide-react";
+import { History, PenIcon, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
 export const sellerColumn: ColumnDef<SellerType>[] = [
@@ -28,38 +28,6 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
     header: "PHONE",
   },
   {
-    accessorKey: "lastPaymentDate",
-    header: "PAYMENT DATE",
-    cell: ({ row }) => {
-      return (
-        row.original.lastPaymentDate && (
-          <p className="font-semibold text-purple-500">
-            {getDaysAgo(row.original.lastPaymentDate)!! <= 0
-              ? "Today"
-              : getDaysAgo(row.original.lastPaymentDate) + " Days ago"}
-          </p>
-        )
-      );
-    },
-  },
-  {
-    accessorKey: "lastPaymentAmount",
-    header: "PAYMENT",
-    cell: ({ row }) => {
-      return (
-        row.original.lastPaymentAmount && (
-          <p className="font-semibold text-green-600">
-            {row.original.lastPaymentAmount} TK
-          </p>
-        )
-      );
-    },
-  },
-  {
-    accessorKey: "monthlyDeliveredAtThatPoint",
-    header: "DELIVERY COUNT",
-  },
-  {
     id: "actions",
     cell: ({ row }) => (
       <div className="flex items-center gap-8">
@@ -75,6 +43,13 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
             href={`/dashboard/sellers/profile/payment?id=${row.original._id}&name=${row.original.name}`}
           >
             <PenIcon size={18} />
+          </Link>
+        </HoverToolkit>
+        <HoverToolkit text="Payment History">
+          <Link
+            href={`/dashboard/sellers/profile/history?id=${row.original._id}&name=${row.original.name}`}
+          >
+            <History size={18} />
           </Link>
         </HoverToolkit>
         <DeleteItem

@@ -3,4 +3,5 @@ export const TAGS = {
   DASHBOARD: "DASHBOARD",
   PRODUCTS: "PRODUCTS",
   SELLERS: "SELLERS",
+  HISTORY: "HISTORY",
 };
