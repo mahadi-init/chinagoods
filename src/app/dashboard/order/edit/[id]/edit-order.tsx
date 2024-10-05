@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import updateAction from "@/actions/update-action";
 import { TAGS } from "@/types/tags";
 import { useRouter } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function EditOrderClient({
   id,
@@ -54,75 +55,81 @@ export default function EditOrderClient({
 
       <form
         onSubmit={handleSubmit(handleUpdate)}
-        className="mt-8 grid grid-cols-1 gap-4"
+        className="mt-8 grid grid-cols-1 gap-8 px-4"
       >
-        <div>
-          <label className="mb-1 block text-sm font-medium" htmlFor="name">
-            Name <span className="text-red-500">*</span>
-          </label>
-          <Input
-            type="text"
-            id="name"
-            placeholder="Enter name"
-            defaultValue={data?.name}
-            {...register("name")}
-          />
-          {errors.name && (
-            <span className="text-xs text-red-700">{errors.name.message}</span>
-          )}
+        <div className="flex gap-12">
+          <div className="w-full">
+            <label className="mb-1 block text-sm font-medium" htmlFor="name">
+              Name <span className="text-red-500">*</span>
+            </label>
+            <Input
+              type="text"
+              id="name"
+              placeholder="Enter name"
+              defaultValue={data?.name}
+              {...register("name")}
+            />
+            {errors.name && (
+              <span className="text-xs text-red-700">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
+          <div className="w-full">
+            <label className="mb-1 block text-sm font-medium" htmlFor="phone">
+              Phone <span className="text-red-500">*</span>
+            </label>
+            <Input
+              type="text"
+              id="phone"
+              placeholder="Enter phone"
+              defaultValue={data?.phone}
+              {...register("phone")}
+            />
+            {errors.phone && (
+              <span className="text-xs text-red-700">
+                {errors.phone.message}
+              </span>
+            )}
+          </div>{" "}
         </div>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium" htmlFor="phone">
-            Phone <span className="text-red-500">*</span>
-          </label>
-          <Input
-            type="text"
-            id="phone"
-            placeholder="Enter phone"
-            defaultValue={data?.phone}
-            {...register("phone")}
-          />
-          {errors.phone && (
-            <span className="text-xs text-red-700">{errors.phone.message}</span>
-          )}
+        <div className="flex gap-12">
+          <div className="w-full">
+            <label className="mb-1 block text-sm font-medium" htmlFor="address">
+              Address <span className="text-red-500">*</span>
+            </label>
+            <Textarea
+              id="address"
+              placeholder="Enter address"
+              defaultValue={data?.address}
+              {...register("address")}
+            />
+            {errors.address && (
+              <span className="text-xs text-red-700">
+                {errors.address.message}
+              </span>
+            )}
+          </div>
+          <div className="w-full">
+            <label className="mb-1 block text-sm font-medium" htmlFor="note">
+              Note
+            </label>
+            <Textarea
+              id="note"
+              placeholder="Enter note"
+              defaultValue={data?.note}
+              {...register("note")}
+            />
+            {errors.note && (
+              <span className="text-xs text-red-700">
+                {errors.note.message}
+              </span>
+            )}
+          </div>
         </div>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium" htmlFor="address">
-            Address <span className="text-red-500">*</span>
-          </label>
-          <Input
-            type="text"
-            id="address"
-            placeholder="Enter address"
-            defaultValue={data?.address}
-            {...register("address")}
-          />
-          {errors.address && (
-            <span className="text-xs text-red-700">
-              {errors.address.message}
-            </span>
-          )}
-        </div>
-
-        <div>
-          <label className="mb-1 block text-sm font-medium" htmlFor="note">
-            Note <span className="text-red-500">*</span>
-          </label>
-          <Input
-            type="text"
-            id="note"
-            placeholder="Enter note"
-            defaultValue={data?.note}
-            {...register("note")}
-          />
-          {errors.note && (
-            <span className="text-xs text-red-700">{errors.note.message}</span>
-          )}
-        </div>
-
-        {/* <div className="flex flex-col gap-2">
+        <div className="flex w-[320px] flex-col gap-2">
           <label className="mb-1 block text-sm font-medium" htmlFor="name">
             Status Update ({data?.status}){" "}
             <span className="text-red-500">*</span>
@@ -132,9 +139,9 @@ export default function EditOrderClient({
             {...register("status")}
             defaultValue={data?.status}
           >
-            <option className="text-sky-600" value="PENDING">
-              PENDING
-            </option>
+            {/* <option className="text-sky-600" value="PENDING"> */}
+            {/*   PENDING */}
+            {/* </option> */}
             <option className="text-yellow-600" value="WAITING">
               WAITING
             </option>
@@ -145,9 +152,13 @@ export default function EditOrderClient({
               CANCELLED
             </option>
           </select>
-        </div> */}
+        </div>
 
-        <SubmitButton text="Update" isMutating={isMutating} />
+        <SubmitButton
+          text="Update"
+          isMutating={isMutating}
+          style="w-[180px] mt-4"
+        />
       </form>
     </div>
   );

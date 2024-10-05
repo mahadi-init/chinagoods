@@ -190,13 +190,11 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex justify-end gap-8">
-        {row.original.status === "WAITING" && (
-          <HoverToolkit text="Edit">
-            <Link href={`/dashboard/order/edit/${row.original._id}`}>
-              <PenIcon size={18} />
-            </Link>
-          </HoverToolkit>
-        )}
+        <HoverToolkit text="Edit">
+          <Link href={`/dashboard/order/edit/${row.original._id}`}>
+            <PenIcon size={18} />
+          </Link>
+        </HoverToolkit>
         {row.original.status === "WAITING" && (
           <OrderConfirmationDialog
             alertText={`# ${getLastSixDigit(row.original._id)} will be sent to courir`}
