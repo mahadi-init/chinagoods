@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { OrderSchema, OrderType } from "@/types/order.t";
 import { ProductType } from "@/types/product.t";
 import { TAGS } from "@/types/tags";
@@ -180,8 +181,9 @@ export default function MakeOrder({
           <label className="mb-1 block text-sm font-medium" htmlFor="address">
             Address <span className="text-red-500">*</span>
           </label>
-          <Input
-            type="text"
+          <Textarea
+            // type="text"
+            cols={4}
             id="address"
             placeholder="Enter address"
             {...register("address", { required: true })}

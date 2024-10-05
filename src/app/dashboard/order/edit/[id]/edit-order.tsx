@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import updateAction from "@/actions/update-action";
 import { TAGS } from "@/types/tags";
+import { useRouter } from "next/navigation";
 
 export default function EditOrderClient({
   id,
@@ -27,6 +28,7 @@ export default function EditOrderClient({
     resolver: zodResolver(OrderSchema),
   });
   const [isMutating, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleUpdate: SubmitHandler<OrderType> = async (data) => {
     startTransition(async () => {
@@ -34,6 +36,7 @@ export default function EditOrderClient({
 
       if (res) {
         toast.success("Order successfully edited");
+        router.replace("/dashboard/order");
       } else {
         toast.error("Order edit failed");
       }
