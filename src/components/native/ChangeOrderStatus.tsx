@@ -5,6 +5,8 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import updateAction from "@/actions/update-action";
 import { TAGS } from "@/types/tags";
+import { cn } from "@/lib/utils";
+import { HoverToolkit } from "./HoverToolkit";
 
 export default function ChangeOrderStatus({
   id,
@@ -49,9 +51,15 @@ export default function ChangeOrderStatus({
         });
       }}
     >
-      <Button variant={"outline"} className="font-bold">
-        {isMutating ? "Loading.." : <p className={color}>{status}</p>}
-      </Button>
+      <HoverToolkit text={status ?? ""}>
+        <Button variant={"outline"} className="font-bold">
+          {isMutating ? (
+            "Loading.."
+          ) : (
+            <p className={cn(color)}>{status?.slice(-12)}</p>
+          )}
+        </Button>
+      </HoverToolkit>
     </ConfirmationDialog>
   );
 }

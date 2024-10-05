@@ -12,6 +12,8 @@ import ChangeOrderStatus from "@/components/native/ChangeOrderStatus";
 import { MultipleHoverToolkit } from "@/components/native/MutipleHoverToolkit";
 import PhoneSearch from "@/components/phone-search";
 import { TAGS } from "@/types/tags";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { toast } from "sonner";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
@@ -131,6 +133,18 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   {
     accessorKey: "consignmentId",
     header: "CONSIGNMENT",
+    cell: ({ row }) => {
+      return (
+        row.original.consignmentId && (
+          <CopyToClipboard
+            text={row.original.consignmentId}
+            onCopy={() => toast.info("Copied to clipboard")}
+          >
+            <p>{row.original.consignmentId}</p>
+          </CopyToClipboard>
+        )
+      );
+    },
   },
   {
     accessorKey: "status",

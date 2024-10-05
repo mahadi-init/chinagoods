@@ -68,7 +68,7 @@ export default function Sidenav(): JSX.Element {
       <aside
         id="nav-menu-4"
         aria-label="Side navigation"
-        className={`fixed bottom-0 left-0 top-0 z-40 flex w-48 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
+        className={`fixed bottom-0 left-0 top-0 z-40 flex w-40 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
