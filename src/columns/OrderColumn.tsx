@@ -136,12 +136,14 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     cell: ({ row }) => {
       return (
         row.original.consignmentId && (
-          <CopyToClipboard
-            text={row.original.consignmentId}
-            onCopy={() => toast.info("Copied to clipboard")}
-          >
-            <p>{row.original.consignmentId}</p>
-          </CopyToClipboard>
+          <div className="cursor-copy">
+            <CopyToClipboard
+              text={row.original.consignmentId}
+              onCopy={() => toast.info("Copied to clipboard")}
+            >
+              <p>{row.original.consignmentId}</p>
+            </CopyToClipboard>{" "}
+          </div>
         )
       );
     },
