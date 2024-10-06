@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PaymentSchema, PaymentType, SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,8 +29,7 @@ export default function EditSellerPayment({
     resolver: zodResolver(PaymentSchema),
   });
   const [isMutating, startTransition] = useTransition();
-
-  console.log(errors);
+  const router = useRouter();
 
   const submitHandler = (data: PaymentType) => {
     if (date && date > new Date()) {
@@ -49,7 +49,7 @@ export default function EditSellerPayment({
 
       if (res) {
         toast.success("Update successful");
-        reset();
+        router.replace(`/dashboard/sellers/profile/history?id=${id}`);
       } else {
         toast.error("Failed updating data");
       }
