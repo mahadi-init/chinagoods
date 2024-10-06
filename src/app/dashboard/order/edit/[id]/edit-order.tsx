@@ -139,16 +139,13 @@ export default function EditOrderClient({
             {...register("status")}
             defaultValue={data?.status}
           >
-            {/* <option className="text-sky-600" value="PENDING"> */}
-            {/*   PENDING */}
-            {/* </option> */}
-            <option className="text-yellow-600" value="WAITING">
+            <option className="text-sky-600" value="WAITING">
               WAITING
             </option>
-            <option className="text-red-600" value="DELIVERED">
+            <option className="text-green-600" value="DELIVERED">
               DELIVERED
             </option>
-            <option className="text-green-600" value="CANCELLED">
+            <option className="text-red-600" value="CANCELLED">
               CANCELLED
             </option>
           </select>

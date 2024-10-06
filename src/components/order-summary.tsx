@@ -10,6 +10,7 @@ import { PackageIcon } from "lucide-react";
 import { OrderType } from "@/types/order.t";
 import Link from "next/link";
 import { ImagepopOver } from "./native/ImagePopOver";
+import { cn } from "@/lib/utils";
 
 export function OrderSummary({ order }: { order?: OrderType }) {
   return (
@@ -21,8 +22,20 @@ export function OrderSummary({ order }: { order?: OrderType }) {
             <h1 className="text-lg font-semibold">Order Summary</h1>
           </div>
           <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                "rounded-full px-3 py-1 text-xs font-medium text-white",
+                order?.confirm === "OK"
+                  ? "bg-green-500"
+                  : order?.confirm === "NO"
+                    ? "bg-red-500"
+                    : "bg-yellow-500",
+              )}
+            >
+              {order?.confirm?.toUpperCase()}
+            </div>
             <div className="rounded-full bg-green-500 px-3 py-1 text-xs font-medium text-white">
-              {order?.status}
+              {order?.status?.toUpperCase()}
             </div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {/* @ts-expect-error */}
@@ -89,21 +102,21 @@ export function OrderSummary({ order }: { order?: OrderType }) {
             <div>
               <h2 className="mb-4 text-lg font-semibold">Order Summary</h2>
               <div className="rounded-lg border border-gray-200 p-4 dark:border-slate-800">
-                {/* <div className="flex items-center justify-between">
-                  <span>Subtotal</span>
-                  <span>৳ {order?.subTotal}</span>
-                </div> */}
-                {/* <div className="flex items-center justify-between">
-                  <span>Shipping</span>
-                  <span>৳ {order?.shippingCost}</span>
-                </div> */}
-                {/* <Separator className="my-4" /> */}
                 <div className="flex items-center justify-between font-semibold">
                   <span>Total</span>
                   <span>৳ {order?.total}</span>
                 </div>
               </div>
             </div>
+
+            {order?.note && (
+              <div>
+                <h2 className="mb-4 text-lg font-semibold">Note</h2>
+                <div className="rounded-lg border border-gray-200 p-4 dark:border-slate-800">
+                  <span className="text-gray-700">{order?.note}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

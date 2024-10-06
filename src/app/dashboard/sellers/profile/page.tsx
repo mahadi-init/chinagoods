@@ -19,7 +19,6 @@ export default async function SellerById({
   };
 }) {
   const auth = searchParams.id;
-  const name = searchParams.name;
 
   const req = new Request();
   const dashboard = await req.get(`/seller/orders/dashboard/${auth}`);

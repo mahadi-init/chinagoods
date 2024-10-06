@@ -10,7 +10,7 @@ export default async function Orders() {
   const req = new Request();
   const dashboard = await req.get("/order/overview", [TAGS.DASHBOARD]);
   const orders = await req.get(
-    "/order/page?page=1&limit=25&filterBy=confirm&confirm=NO",
+    "/order/page?page=1&limit=100&filterBy=confirm&confirm=NO_HOLD",
     [TAGS.ORDERS],
   );
 
@@ -20,7 +20,9 @@ export default async function Orders() {
       <DashboardOverview data={dashboard} />
 
       <div className="mt-16">
-        <p className="text-center text-2xl font-bold">Mini Order (NO ONLY)</p>
+        <p className="text-center text-2xl font-bold">
+          Mini Order <span className="text-yellow-600">(NO & HOLD)</span>
+        </p>
         <OrderUIWrapper
           showTop={false}
           route="/order"
