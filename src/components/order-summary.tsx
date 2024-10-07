@@ -16,7 +16,7 @@ export function OrderSummary({ order }: { order?: OrderType }) {
   return (
     <div className="flex flex-col">
       <header className="bg-gray-100 px-6 py-4 dark:bg-gray-950">
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
           <div className="flex items-center gap-2">
             <PackageIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
             <h1 className="text-lg font-semibold">Order Summary</h1>
@@ -112,8 +112,8 @@ export function OrderSummary({ order }: { order?: OrderType }) {
             {order?.note && (
               <div>
                 <h2 className="mb-4 text-lg font-semibold">Note</h2>
-                <div className="rounded-lg border border-gray-200 p-4 dark:border-slate-800">
-                  <span className="text-gray-700">{order?.note}</span>
+                <div className="rounded-lg border border-gray-200 bg-pink-400 p-4 dark:border-slate-800">
+                  <span className="text-xl text-white">{order?.note}</span>
                 </div>
               </div>
             )}

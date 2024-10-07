@@ -3,7 +3,6 @@ import DeleteItem from "@/components/native/DeleteItem";
 import { HoverToolkit } from "@/components/native/HoverToolkit";
 import { SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
-import { getDaysAgo } from "@/utils/get-days-ago";
 import { ColumnDef } from "@tanstack/react-table";
 import { History, PenIcon, ShoppingBag } from "lucide-react";
 import Link from "next/link";

@@ -6,12 +6,32 @@ import Link from "next/link";
 
 export const sellerOrderColumn: ColumnDef<OrderType>[] = [
   {
+    accessorKey: "confirmation",
+    header: "CONFIRM",
+    cell: ({ row }) => {
+      return (
+        <p
+          className={clsx(
+            "font-bold",
+            row.original.confirm === "OK"
+              ? "text-green-700"
+              : row.original.confirm === "NO"
+                ? "text-red-700"
+                : "text-yellow-600",
+          )}
+        >
+          {row.original.confirm}
+        </p>
+      );
+    },
+  },
+  {
     accessorKey: "sku",
     header: "SKU",
     cell: ({ row }) => {
       return (
         <Link
-          href={`/dashboard/order/details/${row.original._id}`}
+          href={`/seller/order/details/${row.original._id}`}
           className="cursor-pointer font-medium underline"
         >
           {row.original.cart?.map((item) => item.sku).join(" & ")}
