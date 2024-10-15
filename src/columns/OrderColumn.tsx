@@ -14,6 +14,7 @@ import PhoneSearch from "@/components/phone-search";
 import { TAGS } from "@/types/tags";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "sonner";
+import { Route } from "next";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
   {
@@ -120,7 +121,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
       return (
         row.original.trackingLink && (
           <Link
-            href={row.original.trackingLink}
+            href={row.original.trackingLink as Route}
             className="font-medium text-blue-700"
             target="_blank"
           >

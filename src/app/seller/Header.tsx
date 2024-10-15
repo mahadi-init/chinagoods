@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { deleteCookie } from "cookies-next";
+import { Route } from "next";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -47,11 +48,21 @@ export default function Header() {
         >
           Order
         </Link>
+        <Link
+          href={"/seller/edit" as Route}
+          className={
+            pathname.endsWith("/edit")
+              ? "rounded-md bg-purple-700 p-2 font-bold"
+              : ""
+          }
+        >
+          Edit
+        </Link>
         <p
           className={
             pathname.includes("/details")
               ? "rounded-md bg-purple-700 p-2 font-bold"
-              : ""
+              : "hidden"
           }
         >
           Details

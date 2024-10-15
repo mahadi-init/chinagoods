@@ -5,6 +5,7 @@ import { SellerType } from "@/types/seller.t";
 import { TAGS } from "@/types/tags";
 import { ColumnDef } from "@tanstack/react-table";
 import { History, PenIcon, ShoppingBag } from "lucide-react";
+import { Route } from "next";
 import Link from "next/link";
 
 export const sellerColumn: ColumnDef<SellerType>[] = [
@@ -25,6 +26,23 @@ export const sellerColumn: ColumnDef<SellerType>[] = [
   {
     accessorKey: "phone",
     header: "PHONE",
+  },
+  {
+    accessorKey: "fbpage",
+    header: "Page",
+    cell: ({ row }) => {
+      return (
+        row.original.fbpage && (
+          <Link
+            href={row.original.fbpage as Route}
+            className="font-medium text-blue-700"
+            target="_blank"
+          >
+            {row.original.fbpageName ?? "Visit"}
+          </Link>
+        )
+      );
+    },
   },
   {
     id: "actions",

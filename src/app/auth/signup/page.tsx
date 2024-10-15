@@ -41,7 +41,7 @@ export default function Signup() {
       const res = await SignupAction(data);
 
       if (res) {
-        toast.error("Signup successful");
+        toast.success("Signup successful");
         router.replace("/auth/signin");
       } else {
         toast.error("Signup failed");
