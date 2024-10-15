@@ -183,7 +183,7 @@ export default function MakeOrder({
           </label>
           <Textarea
             // type="text"
-            cols={4}
+            cols={8}
             id="address"
             placeholder="Enter address"
             {...register("address", { required: true })}

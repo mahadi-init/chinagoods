@@ -37,7 +37,7 @@ export default function EditOrderClient({
 
       if (res) {
         toast.success("Order successfully edited");
-        router.replace("/dashboard/order");
+        router.replace("/seller/profile");
       } else {
         toast.error("Order edit failed");
       }
@@ -47,11 +47,6 @@ export default function EditOrderClient({
   return (
     <div>
       <PageTop title="Edit Order" />
-
-      <div className="mt-8">
-        <p>Invoice: #{getLastSixDigit(data?._id)}</p>
-        <p>Seller Name : {data?.sellerName}</p>
-      </div>
 
       <form
         onSubmit={handleSubmit(handleUpdate)}
@@ -128,28 +123,6 @@ export default function EditOrderClient({
               </span>
             )}
           </div>
-        </div>
-
-        <div className="flex w-[320px] flex-col gap-2">
-          <label className="mb-1 block text-sm font-medium" htmlFor="name">
-            Status Update ({data?.status}){" "}
-            <span className="text-red-500">*</span>
-          </label>
-          <select
-            className="mt-0.5 rounded-md bg-gray-100 p-2"
-            {...register("status")}
-            defaultValue={data?.status}
-          >
-            <option className="text-sky-600" value="WAITING">
-              WAITING
-            </option>
-            <option className="text-green-600" value="DELIVERED">
-              DELIVERED
-            </option>
-            <option className="text-red-600" value="CANCELLED">
-              CANCELLED
-            </option>
-          </select>
         </div>
 
         <SubmitButton

@@ -56,7 +56,7 @@ export default function Header() {
               : ""
           }
         >
-          Edit
+          Info
         </Link>
         <p
           className={
@@ -66,6 +66,15 @@ export default function Header() {
           }
         >
           Details
+        </p>
+        <p
+          className={
+            pathname.includes("/order/edit")
+              ? "rounded-md bg-purple-700 p-2 font-bold"
+              : "hidden"
+          }
+        >
+          Modify
         </p>
       </div>
 

@@ -1,7 +1,9 @@
 "use client";
+import { HoverToolkit } from "@/components/native/HoverToolkit";
 import { OrderType } from "@/types/order.t";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
+import { PenIcon } from "lucide-react";
 import Link from "next/link";
 
 export const sellerOrderColumn: ColumnDef<OrderType>[] = [
@@ -131,5 +133,19 @@ export const sellerOrderColumn: ColumnDef<OrderType>[] = [
         <p className={clsx(color, "font-semibold")}>{row.original.status}</p>
       );
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <div className="flex justify-end gap-8">
+        {row.original.status === "WAITING" && (
+          <HoverToolkit text="Edit">
+            <Link href={`/seller/order/edit/${row.original._id}`}>
+              <PenIcon size={18} />
+            </Link>
+          </HoverToolkit>
+        )}
+      </div>
+    ),
   },
 ];
