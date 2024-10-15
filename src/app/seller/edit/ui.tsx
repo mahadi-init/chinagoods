@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const SellerSchema = z.object({
-  phone: z.string().min(11, "minimum 11 characters required").optional(),
-  password: z.string().min(6, "minimum 6 characters required").optional(),
+  phone: z.string().optional(),
+  password: z.string().optional(),
   fbpage: z.string().url().optional(),
   fbpageName: z.string().optional(),
 });
