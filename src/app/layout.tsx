@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ProgressProvider from "./progress-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default async function RootLayout({
   return (
     <html>
       <body className={inter.className}>
+        <ProgressProvider />
         <Suspense>{children}</Suspense>
         <Toaster position="top-right" richColors />
         <Analytics />
