@@ -9,7 +9,7 @@ export default async function Layout({
   return (
     <>
       <Sidenav />
-      <div className="mt-12 lg:ml-48 lg:mt-4">{children}</div>
+      <div className="mt-12 lg:ml-[11rem] lg:mt-4">{children}</div>
     </>
   );
 }

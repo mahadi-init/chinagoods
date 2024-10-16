@@ -12,8 +12,6 @@ export default function InvoiceUI({ order }: { order: OrderType }) {
 
   const handlePrint = useReactToPrint({
     documentTitle: `#${getLastSixDigit(order?._id)}`,
-    onBeforePrint: () => console.log("before printing..."),
-    onAfterPrint: () => console.log("after printing..."),
     removeAfterPrint: true,
   });
 
