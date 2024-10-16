@@ -12,7 +12,7 @@ import { z } from "zod";
 const SellerSchema = z.object({
   phone: z.string().optional(),
   password: z.string().optional(),
-  fbpage: z.string().url().optional(),
+  fbpage: z.string().optional(),
   fbpageName: z.string().optional(),
 });
 
