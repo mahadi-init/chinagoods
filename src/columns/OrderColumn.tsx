@@ -15,8 +15,25 @@ import { TAGS } from "@/types/tags";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "sonner";
 import { Route } from "next";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const orderColumn: ColumnDef<OrderType>[] = [
+  {
+    id: "select",
+    cell: ({ row }) => {
+      return (
+        row.original.status === "WAITING" && (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        )
+      );
+    },
+    enableSorting: false,
+    enableHiding: true,
+  },
   {
     accessorKey: "confirmation",
     header: "CONFIRM",
@@ -134,6 +151,7 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   {
     accessorKey: "consignmentId",
     header: "CONSIGNMENT",
+    enableSorting: false,
     cell: ({ row }) => {
       return (
         row.original.consignmentId && (
@@ -189,6 +207,8 @@ export const orderColumn: ColumnDef<OrderType>[] = [
   },
   {
     id: "actions",
+    enableSorting: false,
+    enableHiding: false,
     cell: ({ row }) => (
       <div className="flex justify-end gap-8">
         {row.original.status === "WAITING" && (

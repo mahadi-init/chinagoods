@@ -82,52 +82,57 @@ export default function SellerOrderUIWrapper<
 
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
-      <div className="mb-4 flex items-center justify-between">
-        <Input
-          className="w-fit"
-          placeholder="filter item.."
-          autoFocus
-          onChange={(e) => handleSearch(e.target.value)}
-          defaultValue={search as string}
-        />
-
-        <div className="flex gap-2">
-          <div className="flex gap-2">
-            <select
-              onChange={(e) => handleStatus(e.target.value)}
-              className="mt-0.5 rounded-md bg-gray-100 p-2"
-              defaultValue={status as string}
-            >
-              <option value="ALL">ALL</option>
-              <option className="text-sky-600" value="WAITING">
-                WAITING
-              </option>
-              <option className="text-yellow-700" value="PROCESSING">
-                PROCESSING
-              </option>
-              <option className="text-green-600" value="DELIVERED">
-                DELIVERED
-              </option>
-              <option className="text-red-600" value="CANCELLED">
-                CANCELLED
-              </option>
-            </select>
-          </div>
-
-          <Button
-            onClick={refreshDataInfo}
-            variant="outline"
-            disabled={isMutating}
-          >
-            <div className={clsx(isMutating && "animate-spin")}>
-              <RefreshCwIcon size={18} />
-            </div>
-          </Button>
-        </div>
-      </div>
-
       <div className="h-screen">
-        <DataTable columns={columns} data={data} />
+        <DataTable
+          columns={columns}
+          data={data}
+          columnVisibilityToken="SELLERORDER"
+          showTop={true}
+          firstChild={
+            <Input
+              className="w-fit"
+              placeholder="filter item.."
+              autoFocus
+              onChange={(e) => handleSearch(e.target.value)}
+              defaultValue={search as string}
+            />
+          }
+          lastChild={
+            <div className="flex gap-2">
+              <div className="flex gap-2">
+                <select
+                  onChange={(e) => handleStatus(e.target.value)}
+                  className="mt-0.5 rounded-md bg-gray-100 p-2"
+                  defaultValue={status as string}
+                >
+                  <option value="ALL">ALL</option>
+                  <option className="text-sky-600" value="WAITING">
+                    WAITING
+                  </option>
+                  <option className="text-yellow-700" value="PROCESSING">
+                    PROCESSING
+                  </option>
+                  <option className="text-green-600" value="DELIVERED">
+                    DELIVERED
+                  </option>
+                  <option className="text-red-600" value="CANCELLED">
+                    CANCELLED
+                  </option>
+                </select>
+              </div>
+
+              <Button
+                onClick={refreshDataInfo}
+                variant="outline"
+                disabled={isMutating}
+              >
+                <div className={clsx(isMutating && "animate-spin")}>
+                  <RefreshCwIcon size={18} />
+                </div>
+              </Button>
+            </div>
+          }
+        />
         <div className="mt-8 flex items-center justify-between">
           <div className="flex gap-2">
             <select

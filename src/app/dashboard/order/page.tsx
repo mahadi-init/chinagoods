@@ -33,7 +33,7 @@ export default async function Orders({
   );
 
   return (
-    <>
+    <div className="p-2">
       <PageTop title="Orders (All Orders)" showSubTitle={false} />
       <OrderUIWrapper
         route="/order"
@@ -45,6 +45,6 @@ export default async function Orders({
         columns={orderColumn as any}
         data={data}
       />
-    </>
+    </div>
   );
 }
