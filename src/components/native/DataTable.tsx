@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
       {showTop && (
-        <div className="flex w-full items-center justify-between p-2">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2 p-2">
           {firstChild}
           <div className="flex items-center gap-4">
             {columnVisibilityToken && (
