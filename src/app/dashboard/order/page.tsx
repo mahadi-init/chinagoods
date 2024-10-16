@@ -3,6 +3,7 @@ import PageTop from "@/components/native/PageTop";
 import { Request } from "@/https/request";
 import { TAGS } from "@/types/tags";
 import OrderUIWrapper from "@/ui/OrderUIWrapper";
+import { Suspense } from "react";
 
 type OrderparmasType = {
   page: string;
@@ -35,16 +36,18 @@ export default async function Orders({
   return (
     <div className="p-2">
       <PageTop title="Orders (All Orders)" showSubTitle={false} />
-      <OrderUIWrapper
-        route="/order"
-        limit={limit}
-        search={search}
-        page={page}
-        status={status}
-        confirm={confirm}
-        columns={orderColumn as any}
-        data={data}
-      />
+      <Suspense fallback={null}>
+        <OrderUIWrapper
+          route="/order"
+          limit={limit}
+          search={search}
+          page={page}
+          status={status}
+          confirm={confirm}
+          columns={orderColumn as any}
+          data={data}
+        />
+      </Suspense>
     </div>
   );
 }
