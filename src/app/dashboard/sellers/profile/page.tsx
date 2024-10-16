@@ -3,6 +3,7 @@ import SellerDashboardPage from "@/components/native/SellerDashboard";
 import { Request } from "@/https/request";
 import { TAGS } from "@/types/tags";
 import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
+import { Suspense } from "react";
 
 export default async function SellerById({
   searchParams,
@@ -43,11 +44,13 @@ export default async function SellerById({
     <div>
       <SellerDashboardPage data={dashboard} />
       {auth && (
-        <SellerOrderUIWrapper
-          columns={sellerOrderColumn as any}
-          data={orders}
-          page={page}
-        />
+        <Suspense fallback={null}>
+          <SellerOrderUIWrapper
+            columns={sellerOrderColumn as any}
+            data={orders}
+            page={page}
+          />
+        </Suspense>
       )}
     </div>
   );

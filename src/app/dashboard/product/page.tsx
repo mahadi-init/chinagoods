@@ -3,6 +3,7 @@ import PageTop from "@/components/native/PageTop";
 import { Request } from "@/https/request";
 import { TAGS } from "@/types/tags";
 import ProductUiWrapper from "@/ui/ProductUIWrapper";
+import { Suspense } from "react";
 
 export default async function Products({
   searchParams,
@@ -27,7 +28,9 @@ export default async function Products({
   return (
     <>
       <PageTop title="Products" />
-      <ProductUiWrapper columns={productColumn} data={products} />
+      <Suspense fallback={null}>
+        <ProductUiWrapper columns={productColumn} data={products} />
+      </Suspense>
     </>
   );
 }

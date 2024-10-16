@@ -5,6 +5,7 @@ import { TAGS } from "@/types/tags";
 import SellerOrderUIWrapper from "@/ui/SellerOrderUIWrapper";
 import { getLastSixDigit } from "@/utils/get-last-six-digit";
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 
 export default async function Seller({
   searchParams,
@@ -43,11 +44,13 @@ export default async function Seller({
       />
 
       {auth && (
-        <SellerOrderUIWrapper
-          page={page}
-          columns={sellerOrderColumn as any}
-          data={data}
-        />
+        <Suspense fallback={null}>
+          <SellerOrderUIWrapper
+            page={page}
+            columns={sellerOrderColumn as any}
+            data={data}
+          />
+        </Suspense>
       )}
     </div>
   );
