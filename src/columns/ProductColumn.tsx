@@ -40,17 +40,17 @@ export const productColumn: ColumnDef<ProductType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex items-center justify-end gap-8">
-        {row.original.slug && (
+        {row.original.extraDes && row.original.images && (
           <>
             <HoverToolkit text="Share">
               <FacebookShareButton
-                url={`https://www.chinacup.xyz/shop/${row.original.slug}`}
+                url={`https://www.chinacup.xyz/shop/${row.original._id}`}
               >
                 <Forward />
               </FacebookShareButton>
             </HoverToolkit>
             <HoverToolkit text="View">
-              <Link href={`/shop/${row.original.slug}`} target="_blank">
+              <Link href={`/shop/${row.original._id}`} target="_blank">
                 <Eye />
               </Link>
             </HoverToolkit>
