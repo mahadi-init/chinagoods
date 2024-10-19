@@ -8,7 +8,9 @@ import { z } from "zod";
 const generalInformation = ProductSchema.pick({
   name: true,
   description: true,
+  extraDes: true,
   price: true,
+  afterPrice: true,
   sellerPrice: true,
   quantity: true,
   discount: true,
@@ -25,7 +27,10 @@ export default function GeneralInformation({
   children: React.ReactNode;
   data?: GeneralInformationType;
 }) {
-  const { register } = useFormContext<ProductType>();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<ProductType>();
 
   return (
     <div className="rounded-lg bg-gray-100 p-6 shadow">
@@ -44,6 +49,11 @@ export default function GeneralInformation({
               placeholder="Product Title"
               {...register("name", { required: true })}
             />
+            {errors.name && (
+              <span className="text-xs text-red-700">
+                {errors.name.message}
+              </span>
+            )}
           </div>
 
           <div>
@@ -59,6 +69,28 @@ export default function GeneralInformation({
               placeholder="Your Description"
               {...register("description", { required: true })}
             />
+            {errors.description && (
+              <span className="text-xs text-red-700">
+                {errors.description.message}
+              </span>
+            )}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium" htmlFor="extra">
+              Extra Description
+            </label>
+            <Textarea
+              id="extra"
+              defaultValue={data?.extraDes}
+              placeholder="Your Extra Description"
+              {...register("extraDes")}
+            />
+            {errors.extraDes && (
+              <span className="text-xs text-red-700">
+                {errors.extraDes.message}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -76,6 +108,11 @@ export default function GeneralInformation({
               placeholder="Product price"
               {...register("price", { required: true })}
             />
+            {errors.price && (
+              <span className="text-xs text-red-700">
+                {errors.price.message}
+              </span>
+            )}
             <p className="mt-1 text-xs text-gray-500">
               Set the base price of product.
             </p>
@@ -84,21 +121,45 @@ export default function GeneralInformation({
           <div>
             <label
               className="mb-1 block text-sm font-medium"
-              htmlFor="quantity"
+              htmlFor="discount"
             >
-              Quantity <span className="text-red-500">*</span>
+              Discount Price
             </label>
             <Input
               type="number"
-              id="quantity"
-              defaultValue={data?.quantity}
-              placeholder="Quantity"
-              {...register("quantity", { required: true })}
+              id="discount"
+              defaultValue={data?.afterPrice}
+              placeholder="Discount price"
+              {...register("afterPrice")}
             />
+            {errors.afterPrice && (
+              <span className="text-xs text-red-700">
+                {errors.afterPrice.message}
+              </span>
+            )}
             <p className="mt-1 text-xs text-gray-500">
-              Enter the product quantity.
+              Set the base price of product.
             </p>
           </div>
+
+          {/* <div> */}
+          {/*   <label */}
+          {/*     className="mb-1 block text-sm font-medium" */}
+          {/*     htmlFor="quantity" */}
+          {/*   > */}
+          {/*     Quantity <span className="text-red-500">*</span> */}
+          {/*   </label> */}
+          {/*   <Input */}
+          {/*     type="number" */}
+          {/*     id="quantity" */}
+          {/*     defaultValue={data?.quantity} */}
+          {/*     placeholder="Quantity" */}
+          {/*     {...register("quantity", { required: true })} */}
+          {/*   /> */}
+          {/*   <p className="mt-1 text-xs text-gray-500"> */}
+          {/*     Enter the product quantity. */}
+          {/*   </p> */}
+          {/* </div> */}
         </div>
       </div>
 
@@ -112,14 +173,17 @@ export default function GeneralInformation({
             id="sku"
             defaultValue={data?.sku}
             placeholder="SKU"
-            {...register("sku", { required: false })}
+            {...register("sku", { required: true })}
           />
+          {errors.sku && (
+            <span className="text-xs text-red-700">{errors.sku.message}</span>
+          )}
           <p className="mt-1 text-xs text-gray-500">Enter the product SKU.</p>
         </div>
 
         <div>
           <label className="mb-1 block text-sm font-medium" htmlFor="video-id">
-            Youtube Video Id
+            Youtube video full link
           </label>
           <Input
             type="url"

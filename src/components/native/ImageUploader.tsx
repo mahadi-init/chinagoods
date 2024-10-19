@@ -42,7 +42,7 @@ export function ImageUploader({
       toast.error("Image upload failed");
     },
     onUploadBegin: () => {
-      toast.dismiss();
+      setIsLoading(true);
       toast.loading("Image uploading...");
     },
   });

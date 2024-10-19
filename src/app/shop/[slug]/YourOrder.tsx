@@ -1,6 +1,15 @@
-export default function YourOrder() {
+import { convertEnglishToBengaliNumber } from "@/utils/convert-bangla-english";
+import Image from "next/image";
+
+export default function YourOrder({
+  img,
+  price,
+}: {
+  img?: string;
+  price?: number;
+}) {
   return (
-    <div>
+    <>
       <p className="text-xl font-semibold">Your order</p>
 
       <div className="my-6">
@@ -11,16 +20,22 @@ export default function YourOrder() {
 
         <hr className="my-4 border-[0.1rem] border-dashed border-gray-400" />
 
-        <div className="flex w-full justify-between">
-          <p>Product</p>
-          <p>720</p>
+        <div className="flex w-full items-center justify-between">
+          <Image
+            src={img ?? ""}
+            width={500}
+            height={500}
+            alt="logo"
+            className="w-24 rounded-md"
+          />
+          <p>× 1 &nbsp; {convertEnglishToBengaliNumber(price!!)} ৳</p>
         </div>
         <hr className="my-4 border-[0.1rem] border-dashed border-gray-400" />
 
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>720.00</p>
+            <p>{convertEnglishToBengaliNumber(price!!)} ৳</p>
           </div>
 
           <div className="flex justify-between">
@@ -33,9 +48,9 @@ export default function YourOrder() {
 
         <div className="flex justify-between font-bold">
           <p>Total</p>
-          <p>720.00</p>
+          <p>{convertEnglishToBengaliNumber(price!!)} ৳</p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

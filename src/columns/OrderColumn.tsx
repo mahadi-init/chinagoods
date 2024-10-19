@@ -72,13 +72,13 @@ export const orderColumn: ColumnDef<OrderType>[] = [
     },
   },
   {
-    accessorKey: "orderBy",
+    accessorKey: "sellerName",
     header: "SELLER",
     cell: ({ row }) => {
       return (
         <Link
           href={`/dashboard/sellers/profile?id=${row.original.sellerId}&name=${row.original.sellerName}`}
-          className="cursor-pointer font-medium underline"
+          className={`cursor-pointer font-medium ${row.original.sellerName !== "CUSTOMER" && "cursor-none underline"}`}
         >
           {row.original.sellerName}
         </Link>

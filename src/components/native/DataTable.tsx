@@ -40,24 +40,29 @@ interface DataTableProps<TData, TValue> {
 const color = (
   status?: "WAITING" | "CANCELLED" | "DELIVERED",
   duplicate?: boolean,
+  seller?: "CUSTOMER" | string,
 ) => {
   if (!status) {
     return;
   }
 
   if (duplicate) {
-    return "!text-red-900 font-semibold bg-red-300";
+    return "!text-red-900 font-semibold bg-red-400";
+  }
+
+  if (seller === "CUSTOMER") {
+    return "!text-yellow-900 font-semibold bg-yellow-300";
   }
 
   switch (status) {
     case "WAITING":
       return "!text-black";
     case "DELIVERED":
-      return "!text-green-900 font-semibold bg-green-100";
+      return "!text-green-900 font-semibold bg-green-200";
     case "CANCELLED":
-      return "!text-red-900 font-semibold bg-red-100";
+      return "!text-red-900 font-semibold bg-red-200";
     default:
-      return "!text-purple-900 font-semibold bg-purple-100";
+      return "!text-purple-900 font-semibold bg-purple-200";
   }
 };
 
@@ -189,6 +194,7 @@ export function DataTable<TData, TValue>({
                       className={color(
                         cell.row.getValue("status"),
                         cell.row.getValue("duplicate"),
+                        cell.row.getValue("sellerName"),
                       )}
                     >
                       {flexRender(
